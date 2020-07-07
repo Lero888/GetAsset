@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">GetAsset</string>
+
+    <string name="navigation_drawer_open">Open Navigation Drawer</string>
+    <string name="navigation_drawer_close">Close Navigation Drawer</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="username">Username</string>
+    <string name="email">Email</string>
+    <string name="table">Table</string>
+    <string name="reservation_status">Reservation Status</string>
 </resources>

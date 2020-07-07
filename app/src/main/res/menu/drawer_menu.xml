@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+
+        <item android:id="@+id/nav_status"
+            android:icon="@drawable/ic_reservation_status"
+            android:title="Reservation Status" />
+
+        <item android:id="@+id/nav_item_reserve"
+            android:icon="@drawable/ic_item_reserve"
+            android:title="Item Reservation" />
+
+        <item android:id="@+id/nav_room_reserve"
+            android:icon="@drawable/ic_room_reserve"
+            android:title="Classroom Reservation" />
+
+    </group>
+
+
+    <item android:title="Communicate">
+        <menu>
+            <item android:id="@+id/nav_share"
+                android:icon="@drawable/ic_share"
+                android:title="Share" />
+        </menu>
+    </item>
+
+</menu>
