@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragment_room_reservation_details">
+
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#ffffff"
+        android:overScrollMode="always">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="750dp">
+
+            <Button
+                android:id="@+id/button_cancel"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="217dp"
+                android:layout_marginLeft="217dp"
+                android:layout_marginBottom="231dp"
+                android:background="@drawable/button_layout"
+                android:text="cancel"
+                android:textColor="#F6F0F0" />
+
+            <TextView
+                android:id="@+id/CR_titleUsage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="54dp"
+                android:layout_marginLeft="54dp"
+                android:layout_marginTop="536dp"
+                android:text="Usage"
+                android:textColor="#130202"
+                android:textSize="24sp" />
+
+            <TextView
+                android:id="@+id/CR_titleTime3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="54dp"
+                android:layout_marginLeft="54dp"
+                android:layout_marginTop="436dp"
+                android:text="Phone No."
+                android:textColor="#130202"
+                android:textSize="24sp" />
+
+            <EditText
+                android:id="@+id/editTextTime"
+                android:layout_width="300dp"
+                android:layout_height="30dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="54dp"
+                android:layout_marginLeft="54dp"
+                android:layout_marginTop="383dp"
+                android:background="#EAE4E4"
+                android:ems="10"
+                android:enabled="false"
+                android:inputType="textPersonName" />
+
+            <EditText
+                android:id="@+id/editTextPhone"
+                android:layout_width="300dp"
+                android:layout_height="30dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="54dp"
+                android:layout_marginLeft="54dp"
+                android:layout_marginTop="482dp"
+                android:background="#EAE4E4"
+                android:ems="10"
+                android:inputType="phone" />
+
+            <EditText
+                android:id="@+id/editTextDate"
+                android:layout_width="300dp"
+                android:layout_height="30dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="54dp"
+                android:layout_marginLeft="54dp"
+                android:layout_marginTop="281dp"
+                android:background="#EAE4E4"
+                android:ems="10"
+                android:enabled="false"
+                android:inputType="textPersonName" />
+
+            <TextView
+                android:id="@+id/CR_titleDate2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="54dp"
+                android:layout_marginLeft="54dp"
+                android:layout_marginTop="235dp"
+                android:text="Reservation Date"
+                android:textColor="#130202"
+                android:textSize="24sp" />
+
+            <TextView
+                android:id="@+id/CR_titleNo2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="54dp"
+                android:layout_marginLeft="54dp"
+                android:layout_marginTop="133dp"
+                android:text="Classroom No."
+                android:textColor="#130202"
+                android:textSize="24sp" />
+
+            <TextView
+                android:id="@+id/CR_titleTime2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="54dp"
+                android:layout_marginLeft="54dp"
+                android:layout_marginTop="334dp"
+                android:text="Reservation Time"
+                android:textColor="#130202"
+                android:textSize="24sp" />
+
+            <TextView
+                android:id="@+id/CR_title2"
+                android:layout_width="332dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginStart="48dp"
+                android:layout_marginLeft="48dp"
+                android:layout_marginTop="32dp"
+                android:layout_marginEnd="29dp"
+                android:layout_marginRight="29dp"
+                android:gravity="center"
+                android:text="Classroom Reservation Details"
+                android:textColor="#0C0C0C"
+                android:textSize="30sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/editTextNo"
+                android:layout_width="300dp"
+                android:layout_height="30dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="54dp"
+                android:layout_marginLeft="54dp"
+                android:layout_marginTop="179dp"
+                android:background="#EAE4E4"
+                android:ems="10"
+                android:enabled="false"
+                android:inputType="textPersonName" />
+
+            <EditText
+                android:id="@+id/editTextTextMultiLine"
+                android:layout_width="304dp"
+                android:layout_height="100dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginStart="54dp"
+                android:layout_marginLeft="54dp"
+                android:layout_marginTop="580dp"
+                android:layout_marginEnd="54dp"
+                android:layout_marginRight="54dp"
+                android:background="#EAE4E4"
+                android:ems="10"
+                android:gravity="start|top"
+                android:inputType="textMultiLine" />
+
+            <Button
+                android:id="@+id/button_save"
+                android:layout_width="120dp"
+                android:layout_height="50dp"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="54dp"
+                android:layout_marginLeft="54dp"
+                android:background="@drawable/button_layout"
+                android:text="SAVE"
+                android:textColor="#F6F0F0" />
+
+
+        </RelativeLayout>
+
+    </ScrollView>
+
+</FrameLayout>

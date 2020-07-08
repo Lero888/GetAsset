@@ -9,4 +9,42 @@
     <string name="email">Email</string>
     <string name="table">Table</string>
     <string name="reservation_status">Reservation Status</string>
+    <string-array name="dates">
+        <item>20/7/2020</item>
+        <item>21/7/2020</item>
+        <item>22/7/2020</item>
+        <item>23/7/2020</item>
+        <item>24/7/2020</item>
+    </string-array>
+    <string-array name="time">
+        <item>9am-10am</item>
+        <item>10am-11am</item>
+        <item>11am-12pm</item>
+        <item>12pm-1pm</item>
+        <item>1pm-2pm</item>
+        <item>2pm-3pm</item>
+        <item>3pm-4pm</item>
+        <item>4pm-5pm</item>
+        <item>5pm-6pm</item>
+        <item>6pm-7pm</item>
+        <item>7pm-8pm</item>
+        <item>8pm-9pm</item>
+    </string-array>
+    <string-array name="classroom_type">
+        <item>Seminar Rooms (20 capacity)</item>
+        <item>Classrooms (50-100 capacity)</item>
+    </string-array>
+    <string-array name="classroom_No1">
+        <item>B1 101B</item>
+        <item>B1 101C</item>
+    </string-array>
+    <string-array name="classroom_No2">
+        <item>B1 B06-01</item>
+        <item>B1 B06-02</item>
+        <item>B1 B08</item>
+        <item>B1 B09</item>
+        <item>B1 B10</item>
+        <item>B1 213</item>
+        <item>B1 214</item>
+    </string-array>
 </resources>

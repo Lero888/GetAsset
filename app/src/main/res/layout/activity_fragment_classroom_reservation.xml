@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragment_classroom_reservation"
+    android:fitsSystemWindows="true">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <Spinner
+            android:id="@+id/spinner_No"
+            android:layout_width="300dp"
+            android:layout_height="30dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginStart="51dp"
+            android:layout_marginLeft="51dp"
+            android:layout_marginTop="444dp"
+            android:background="#EAE4E4" />
+
+        <TextView
+            android:id="@+id/CR_titleNo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="54dp"
+            android:layout_marginLeft="54dp"
+            android:layout_marginTop="400dp"
+            android:text="Classroom No."
+            android:textColor="#130202"
+            android:textSize="24sp" />
+
+        <TextView
+            android:id="@+id/CR_titleDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="54dp"
+            android:layout_marginLeft="54dp"
+            android:layout_marginTop="94dp"
+            android:text="Reservation Date"
+            android:textColor="#130202"
+            android:textSize="24sp" />
+
+        <Spinner
+            android:id="@+id/spinner_Date"
+            android:layout_width="300dp"
+            android:layout_height="30dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginStart="51dp"
+            android:layout_marginLeft="51dp"
+            android:layout_marginTop="138dp"
+            android:background="#EAE4E4" />
+
+        <Spinner
+            android:id="@+id/spinner_time"
+            android:layout_width="300dp"
+            android:layout_height="30dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginStart="51dp"
+            android:layout_marginLeft="51dp"
+            android:layout_marginTop="242dp"
+            android:background="#EAE4E4" />
+
+        <TextView
+            android:id="@+id/CR_titleTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="54dp"
+            android:layout_marginLeft="54dp"
+            android:layout_marginTop="198dp"
+            android:text="Reservation Time"
+            android:textColor="#130202"
+            android:textSize="24sp" />
+
+        <Spinner
+            android:id="@+id/spinner_Type"
+            android:layout_width="300dp"
+            android:layout_height="30dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginStart="51dp"
+            android:layout_marginLeft="51dp"
+            android:layout_marginTop="341dp"
+            android:background="#EAE4E4" />
+
+        <TextView
+            android:id="@+id/CR_titleType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="54dp"
+            android:layout_marginLeft="54dp"
+            android:layout_marginTop="297dp"
+            android:text="Classroom Type"
+            android:textColor="#130202"
+            android:textSize="24sp" />
+
+        <TextView
+            android:id="@+id/CR_title"
+            android:layout_width="332dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginStart="48dp"
+            android:layout_marginLeft="48dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="29dp"
+            android:layout_marginRight="29dp"
+            android:text="Classroom Reservation"
+            android:textColor="#0C0C0C"
+            android:textSize="30sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/button_book"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="53dp"
+            android:layout_marginLeft="53dp"
+            android:layout_marginBottom="49dp"
+            android:background="@drawable/button_layout"
+            android:text="Book"
+            android:textColor="#F8F5F5"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/book_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="181dp"
+            android:layout_marginRight="181dp"
+            android:layout_marginBottom="20dp"
+            android:text="TextView"
+            android:textColor="#F30C0C"
+            android:visibility="invisible" />
+    </RelativeLayout>
+
+</FrameLayout>

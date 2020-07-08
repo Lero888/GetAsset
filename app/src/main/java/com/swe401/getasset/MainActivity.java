@@ -69,6 +69,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new fragment_status()).commit();
                 break;
+            case R.id.nav_room_reserve:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new fragment_classroom_reservation()).commit();
+                break;
             case R.id.nav_share:
                 Toast.makeText(this, "Share to WhatsApp", Toast.LENGTH_SHORT).show();
                 break;

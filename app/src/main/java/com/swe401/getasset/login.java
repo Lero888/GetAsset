@@ -34,7 +34,15 @@ public class login extends AppCompatActivity {
             public void onClick(View view) {
                 String un = Username.getText().toString();
                 String pw = Password.getText().toString();
-                if ((un.equals("test")) && (pw.equals("1234"))) {
+                if (un.length()==0){
+                    Username.requestFocus();
+                    Username.setError("FIELD CANNOT BE EMPTY");
+                }
+                else if(pw.length()==0){
+                    Password.requestFocus();
+                    Password.setError("FIELD CANNOT BE EMPTY");
+                }
+                else if ((un.equals("test")) && (pw.equals("1234"))) {
                     Intent intent = new Intent(login.this, MainActivity.class);
                     startActivity(intent);
 
