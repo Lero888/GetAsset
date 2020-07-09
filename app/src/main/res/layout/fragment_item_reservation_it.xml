@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragment_item_reservation_it"
+    android:fitsSystemWindows="true">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <TextView
+            android:id="@+id/item_reserve_it"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="0dp"
+            android:layout_marginRight="0dp"
+            android:text="@string/item_reservation_it"
+            android:textColor="#0C0C0C"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+<!--         Speaker-->
+        <ImageButton
+            android:id="@+id/button_speaker"
+            android:layout_width="117dp"
+            android:layout_height="114dp"
+            android:layout_below="@id/item_reserve_it"
+            android:layout_marginStart="50dp"
+            android:layout_marginLeft="50dp"
+            android:layout_marginTop="42dp"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
+            android:src="@drawable/it_equip" />
+
+        <TextView
+            android:id="@+id/Speaker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@id/button_speaker"
+            android:layout_toEndOf="@id/button_speaker"
+            android:layout_below="@id/item_reserve_it"
+            android:layout_marginStart="30dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="120dp"
+            android:layout_marginEnd="50dp"
+            android:layout_marginRight="50dp"
+            android:text="@string/speaker"
+            android:textColor="#130202"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+
+        <TextView
+            android:id="@+id/SpeakerQuantity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/button_speaker"
+            android:layout_toEndOf="@+id/button_speaker"
+            android:layout_below="@id/Speaker"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginLeft="30dp"
+            android:textColor="#130202"
+            android:textSize="20sp"
+            android:text="@string/quantity" />
+
+        <TextView
+            android:id="@+id/SpeakerAmount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/Speaker"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="50dp"
+            android:layout_marginEnd="50dp"
+            android:layout_toRightOf="@id/SpeakerQuantity"
+            android:layout_toEndOf="@id/SpeakerQuantity"
+            android:textColor="#130202"
+            android:textSize="20sp"
+            android:text="Quantity" />
+
+<!--        Microphone-->
+        <ImageButton
+            android:id="@+id/button_mic"
+            android:layout_width="117dp"
+            android:layout_height="114dp"
+            android:layout_marginLeft="50dp"
+            android:layout_marginStart="50dp"
+            android:layout_marginTop="50dp"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
+            android:layout_below="@id/button_speaker"
+            android:src="@drawable/microphone" />
+
+        <TextView
+            android:id="@+id/Microphone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/button_mic"
+            android:layout_toEndOf="@id/button_mic"
+            android:layout_below="@id/button_speaker"
+            android:layout_marginStart="30dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="60dp"
+            android:layout_marginEnd="50dp"
+            android:layout_marginRight="50dp"
+            android:text="@string/microphone"
+            android:textColor="#130202"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+
+        <TextView
+            android:id="@+id/MicQuantity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/button_mic"
+            android:layout_toEndOf="@+id/button_mic"
+            android:layout_below="@id/Microphone"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginLeft="30dp"
+            android:textColor="#130202"
+            android:textSize="20sp"
+            android:text="@string/quantity" />
+
+        <TextView
+            android:id="@+id/MicAmount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/Microphone"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginEnd="50dp"
+            android:layout_marginRight="50dp"
+            android:layout_toRightOf="@id/MicQuantity"
+            android:layout_toEndOf="@+id/MicQuantity"
+            android:textColor="#130202"
+            android:textSize="20sp"
+            android:text="@string/quantity"/>
+
+
+    </RelativeLayout>
+
+</FrameLayout>

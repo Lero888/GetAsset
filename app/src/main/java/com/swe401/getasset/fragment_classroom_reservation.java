@@ -44,7 +44,7 @@ public class fragment_classroom_reservation extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment fragment_item_reservation.
+     * @return A new instance of fragment activity_fragment_classroom_reservation.
      */
     // TODO: Rename and change types and number of parameters
     public static fragment_classroom_reservation newInstance(String param1, String param2) {

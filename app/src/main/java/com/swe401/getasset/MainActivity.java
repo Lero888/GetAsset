@@ -18,6 +18,8 @@ import com.google.android.material.navigation.NavigationView;
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private DrawerLayout drawer;
+    private NavigationView navView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +37,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         toggle.syncState();
 
         // detect selection of the user
-        NavigationView navView = findViewById(R.id.nav_view);
+        navView = findViewById(R.id.nav_view);
         navView.setNavigationItemSelectedListener(this);
 
         if (savedInstanceState == null) {
@@ -46,6 +48,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
+    // if back is pressed
     @Override
     public void onBackPressed() {
 
@@ -64,22 +67,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.nav_item_reserve:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new fragment_item_reservation()).commit();
+                navView.setCheckedItem(R.id.nav_item_reserve);
+
                 break;
             case R.id.nav_status:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new fragment_status()).commit();
+                navView.setCheckedItem(R.id.nav_status);
                 break;
             case R.id.nav_room_reserve:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new fragment_classroom_reservation()).commit();
+                navView.setCheckedItem(R.id.nav_room_reserve);
                 break;
             case R.id.nav_share:
                 Toast.makeText(this, "Share to WhatsApp", Toast.LENGTH_SHORT).show();
                 break;
 
         }
-
-        menuItem.setChecked(true);
 
         // close nav after selection
         drawer.closeDrawer(GravityCompat.START);
