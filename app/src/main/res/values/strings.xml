@@ -18,6 +18,22 @@
     <string name="ITEquip">IT Equipment</string>
     <string name="quantity">Quantity:</string>
 
+    <string name="item_reservation">Item Reservation</string>
+    <string name="item_reservation_it">Item Reservation: IT</string>
+    <string name="speaker">Speaker</string>
+    <string name="microphone">Microphone</string>
+    <string name="item_reservation_details">Item Reservation Details</string>
+    <string name="item">Item:</string>
+    <string name="description">Description:</string>
+    <string name="item_instruction">Please select date to check availability of the item.</string>
+
+    <string name="department">Department:</string>
+    <string name="book_instruction">Please fill in the following details.</string>
+    <string name="phone_no">Phone No.</string>
+    <string name="reservation_date">Reservation Date</string>
+    <string name="quantity_word">Quantity</string>
+    <string name="item_reserve_successful">The item is reserved. Please head to the department on the respective date to get the item.</string>
+
     // Classroom Reservation
     <string-array name="dates">
         <item>20/7/2020</item>
@@ -146,8 +162,8 @@
         "For example, position the FAB to one side of stream of a cards so the FAB won’t interfere "
         "when a user tries to pick up one of cards.\n\n"
     </string>
-    <string name="item_reservation">Item Reservation</string>
-    <string name="item_reservation_it">Item Reservation: IT</string>
-    <string name="speaker">Speaker</string>
-    <string name="microphone">Microphone</string>
+    <string name="cancel">CANCEL</string>
+    <string name="save">SAVE</string>
+
+
 </resources>

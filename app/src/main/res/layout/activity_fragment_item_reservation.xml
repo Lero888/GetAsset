@@ -7,14 +7,13 @@
     tools:context=".fragment_item_reservation"
     android:fitsSystemWindows="true">
 
-    <!-- TODO: Update blank fragment layout -->
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
 
         <TextView
-            android:id="@+id/item_reserve"
+            android:id="@+id/IR_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
@@ -24,7 +23,7 @@
             android:layout_marginRight="0dp"
             android:text="@string/item_reservation"
             android:textColor="#0C0C0C"
-            android:textSize="20sp"
+            android:textSize="30sp"
             android:textStyle="bold" />
 
 <!--         Table-->
@@ -33,7 +32,7 @@
             android:contentDescription="@string/table"
             android:layout_width="117dp"
             android:layout_height="114dp"
-            android:layout_below="@id/item_reserve"
+            android:layout_below="@id/IR_title"
             android:layout_marginStart="50dp"
             android:layout_marginLeft="50dp"
             android:layout_marginTop="42dp"
@@ -48,7 +47,7 @@
             android:layout_alignParentTop="true"
             android:layout_toRightOf="@id/button_table"
             android:layout_toEndOf="@id/button_table"
-            android:layout_below="@id/item_reserve"
+            android:layout_below="@id/IR_title"
             android:layout_marginStart="30dp"
             android:layout_marginLeft="30dp"
             android:layout_marginTop="120dp"
