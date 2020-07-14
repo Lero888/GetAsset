@@ -5,8 +5,16 @@ import android.content.Context;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.database.Cursor;
+import android.provider.ContactsContract;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
+
+
+//    private DatabaseHelper db;
 
     // name of the database
     public static final String DB_NAME = "getAsset.db";
@@ -36,7 +44,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String IQID = "IQID";
     public static final String QUANTITY_LEFT = "quantityLeft";
     public static final String QUANTITY_DATE = "quantityDate";
-    public static final String FK_IQIQ_IID = "itemID";
+    public static final String FK_IQID_IID = "itemID";
 
     // table ItemBorrow
     public static final String TABLE_ITEM_BORROW= "ITEM_BORROW";
@@ -76,7 +84,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             db.execSQL("CREATE TABLE "+ TABLE_ITEM_QUANTITY + "( " + IQID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                     + QUANTITY_LEFT + " INTEGER, "
                     + QUANTITY_DATE + " INTEGER, "
-                    + FK_IQIQ_IID + " INTEGER);");
+                    + " FOREIGN KEY (" + FK_IQID_IID + ") REFERENCES " + TABLE_ITEM + "(" + IID + "));");
+
 
             db.execSQL("CREATE TABLE "+ TABLE_ITEM_BORROW + "( " + IBID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                     + BORROW_DATE + " INTEGER, "
@@ -84,18 +93,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     + BORROW_STATUS + " TEXT, "
                     + TEL_NO + " TEXT, "
                     + BORROW_USAGE + " TEXT, "
-                    + FK_IBID_IID + " INTEGER, "
-                    + FK_IBID_UID + " INTEGER);");
-
-            insertUserData("LEE ROU", "hello", "swe1704655@xmu.edu.my");
-            insertUserData("LIM CAROL", "hello", "swe1704205@xmu.edu.my");
-
-            insertItemData("Table", "Asset", 100, "Classroom Table", "Table");
-            insertItemData("Chair", "Asset", 200, "Plastic Chair", "Chair");
-            insertItemData("Microphone", "IT", 5, "Wireless Microphone (requires confirmation letter)", "IT Equipment");
-            insertItemData("Speaker", "IT", 2, "Portable Speaker (with microphone)", "IT Equipment");
-
-
+                    + " FOREIGN KEY (" + FK_IBID_IID + ") REFERENCES " + TABLE_ITEM + "(" + IID + "), "
+                    + " FOREIGN KEY (" + FK_IBID_UID + ") REFERENCES " + TABLE_USER + "(" + UID + "));");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -107,11 +106,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_USER);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_ITEM);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_ITEM_QUANTITY);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_ITEM_BORROW);
 
         onCreate(db);
 
 
     }
+
+//    public void closeDatabase(DatabaseHelper db) {
+//        if (db != null && db.isOpen()) {
+//            db.close();
+//        }
+//    }
 
     public boolean insertUserData(String name, String password, String email) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -141,6 +148,23 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         else return true;
 
     }
+
+    public Cursor fetchItemData(String item) {
+
+        SQLiteDatabase db = this.getReadableDatabase();
+//        List <Object> list = new ArrayList<>();
+//        Cursor cursor = this.database.query(SQLiteHelper.TABLE_NAME_STUDENT, new String[]{SQLiteHelper._ID, SQLiteHelper.NAME, SQLiteHelper.AGE}, null, null, null, null, null);
+        String queryString = "SELECT * FROM " + TABLE_ITEM + "WHERE " + ITEM_NAME + "= " + item;
+        Cursor cursor = db.rawQuery(queryString, null);
+        if (cursor != null) {
+
+            cursor.moveToFirst();
+        }
+
+        return cursor;
+    }
+
+
 
 
 }

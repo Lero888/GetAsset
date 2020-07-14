@@ -11,6 +11,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 public class login extends AppCompatActivity {
+
+    DatabaseHelper assetDb;
+
     private EditText Username;
     private EditText Password;
     private TextView Info;
@@ -19,8 +22,11 @@ public class login extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+//        assetDb = new DatabaseHelper(login.this);
+        assetDb = new DatabaseHelper(this);
 
 
         Username = (EditText) findViewById(R.id.login_username);
@@ -53,5 +59,17 @@ public class login extends AppCompatActivity {
             }
         });
 
+        loadData();
+    }
+
+    public void loadData() {
+
+        assetDb.insertUserData("LEE ROU", "hello", "swe1704655@xmu.edu.my");
+        assetDb.insertUserData("LIM CAROL", "hello", "swe1704205@xmu.edu.my");
+
+        assetDb.insertItemData("Table", "Asset", 100, "Classroom Table", "Table");
+        assetDb.insertItemData("Chair", "Asset", 200, "Plastic Chair", "Chair");
+        assetDb.insertItemData("Microphone", "IT", 5, "Wireless Microphone (requires confirmation letter)", "IT Equipment");
+        assetDb.insertItemData("Speaker", "IT", 2, "Portable Speaker (with microphone)", "IT Equipment");
     }
 }

@@ -68,6 +68,13 @@ public class fragment_item_reservation_details_one extends Fragment {
         // Inflate the layout for this fragment
         final View view = inflater.inflate(R.layout.fragment_item_reservation_details_one, container, false);
 
+        Bundle bundle = this.getArguments();
+        String item = "";
+
+        if(bundle != null){
+            item = bundle.getString("item");
+        }
+
         book = (Button) view.findViewById(R.id.button_book_item);
 
         // go to booking fragment
