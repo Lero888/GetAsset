@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragment_room_reservation_details">
+    tools:context=".fragment_room_reservation_details"
+    >
 
     <ScrollView
         android:layout_width="wrap_content"
@@ -14,18 +15,18 @@
 
         <RelativeLayout
             android:layout_width="wrap_content"
-            android:layout_height="750dp">
+            android:layout_height="750dp"
+            android:id="@+id/rl_container">
 
             <Button
                 android:id="@+id/button_cancel"
                 android:layout_width="120dp"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentBottom="true"
+                android:layout_height="30dp"
+                android:layout_below="@+id/editTextTextMultiLine"
                 android:layout_marginStart="217dp"
                 android:layout_marginLeft="217dp"
-                android:layout_marginBottom="231dp"
+                android:layout_marginTop="11dp"
+                android:layout_marginBottom="10dp"
                 android:background="@drawable/button_layout"
                 android:text="cancel"
                 android:textColor="#F6F0F0" />
@@ -71,7 +72,8 @@
                 android:background="#EAE4E4"
                 android:ems="10"
                 android:enabled="false"
-                android:inputType="textPersonName" />
+                android:inputType="textPersonName"
+                android:textColor="#050505" />
 
             <EditText
                 android:id="@+id/editTextPhone"
@@ -85,7 +87,8 @@
                 android:layout_marginTop="482dp"
                 android:background="#EAE4E4"
                 android:ems="10"
-                android:inputType="phone" />
+                android:inputType="phone"
+                android:textColor="#000000" />
 
             <EditText
                 android:id="@+id/editTextDate"
@@ -100,7 +103,8 @@
                 android:background="#EAE4E4"
                 android:ems="10"
                 android:enabled="false"
-                android:inputType="textPersonName" />
+                android:inputType="textPersonName"
+                android:textColor="#101010" />
 
             <TextView
                 android:id="@+id/CR_titleDate2"
@@ -178,7 +182,8 @@
                 android:background="#EAE4E4"
                 android:ems="10"
                 android:enabled="false"
-                android:inputType="textPersonName" />
+                android:inputType="textPersonName"
+                android:textColor="#000000" />
 
             <EditText
                 android:id="@+id/editTextTextMultiLine"
@@ -196,15 +201,18 @@
                 android:background="#EAE4E4"
                 android:ems="10"
                 android:gravity="start|top"
-                android:inputType="textMultiLine" />
+                android:inputType="textMultiLine"
+                android:textColor="#040303" />
 
             <Button
                 android:id="@+id/button_save"
                 android:layout_width="120dp"
-                android:layout_height="50dp"
-                android:layout_alignParentBottom="true"
+                android:layout_height="30dp"
+                android:layout_below="@+id/editTextTextMultiLine"
                 android:layout_marginStart="54dp"
                 android:layout_marginLeft="54dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
                 android:background="@drawable/button_layout"
                 android:text="SAVE"
                 android:textColor="#F6F0F0" />

@@ -1,5 +1,6 @@
 package com.swe401.getasset;
 
+import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -186,8 +187,27 @@ public class fragment_classroom_reservation extends Fragment {
         book.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), fragment_room_reservation_details.class);
-                startActivity(intent);
+                String st = selectedTime[0];
+                String sd = selectedDate[0];
+                String sr = selectedRoom[0];
+
+                fragment_room_reservation_details nextFrag = new fragment_room_reservation_details();
+                Bundle args = new Bundle();
+                args.putString("Room",sr);
+                args.putString("Date",sd);
+                args.putString("Time",st);
+                nextFrag.setArguments(args);
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_container, nextFrag)
+                        .addToBackStack(null)
+                        .commit();
+
+                //Intent intent = new Intent(getActivity(), fragment_room_reservation_details.class);
+
+                //intent.putExtra("Time",st);
+                //intent.putExtra("Date",sd);
+                //intent.putExtra("Room",sr);
+                //startActivity(intent);
             }
         });
 
