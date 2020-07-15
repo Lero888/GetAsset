@@ -45,7 +45,7 @@
                 android:src="@drawable/table" />
 
             <TextView
-                android:id="@+id/ItemName"
+                android:id="@+id/itemName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
@@ -60,7 +60,7 @@
                 android:text="@string/item" />
 
             <TextView
-                android:id="@+id/ItemName2"
+                android:id="@+id/itemName2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/image_item"
@@ -69,19 +69,19 @@
                 android:layout_marginLeft="5dp"
                 android:layout_marginEnd="50dp"
                 android:layout_marginRight="50dp"
-                android:layout_toRightOf="@id/ItemName"
-                android:layout_toEndOf="@id/ItemName"
+                android:layout_toRightOf="@id/itemName"
+                android:layout_toEndOf="@id/itemName"
                 android:textColor="#130202"
                 android:textSize="20sp"
                 android:text="Quantity" />
 
             <TextView
-                android:id="@+id/ItemDepartment"
+                android:id="@+id/itemDepartment"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentLeft="true"
-                android:layout_below="@id/ItemName"
+                android:layout_below="@id/itemName"
                 android:layout_marginTop="10dp"
                 android:layout_marginStart="30dp"
                 android:layout_marginLeft="50dp"
@@ -91,28 +91,28 @@
                 android:text="@string/department" />
 
             <TextView
-                android:id="@+id/ItemDepartment2"
+                android:id="@+id/itemDepartment2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/ItemName"
+                android:layout_below="@id/itemName"
                 android:layout_marginTop="10dp"
                 android:layout_marginStart="5dp"
                 android:layout_marginLeft="5dp"
                 android:layout_marginEnd="50dp"
                 android:layout_marginRight="50dp"
-                android:layout_toRightOf="@id/ItemDepartment"
-                android:layout_toEndOf="@id/ItemDepartment"
+                android:layout_toRightOf="@id/itemDepartment"
+                android:layout_toEndOf="@id/itemDepartment"
                 android:textColor="#130202"
                 android:textSize="20sp"
                 android:text="Quantity" />
 
             <TextView
-                android:id="@+id/ItemDesc"
+                android:id="@+id/itemDesc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentLeft="true"
-                android:layout_below="@id/ItemDepartment"
+                android:layout_below="@id/itemDepartment"
                 android:layout_marginTop="10dp"
                 android:layout_marginStart="30dp"
                 android:layout_marginLeft="50dp"
@@ -125,14 +125,14 @@
                 android:id="@+id/ItemDesc2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/ItemDepartment"
+                android:layout_below="@id/itemDepartment"
                 android:layout_marginTop="10dp"
                 android:layout_marginStart="5dp"
                 android:layout_marginLeft="5dp"
                 android:layout_marginEnd="50dp"
                 android:layout_marginRight="50dp"
-                android:layout_toRightOf="@id/ItemDesc"
-                android:layout_toEndOf="@id/ItemDesc"
+                android:layout_toRightOf="@id/itemDesc"
+                android:layout_toEndOf="@id/itemDesc"
                 android:textColor="#130202"
                 android:textSize="20sp"
                 android:text="Quantity" />
@@ -141,7 +141,7 @@
                 android:id="@+id/ItemInstruction"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/ItemDesc"
+                android:layout_below="@id/itemDesc"
                 android:layout_centerHorizontal="true"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"

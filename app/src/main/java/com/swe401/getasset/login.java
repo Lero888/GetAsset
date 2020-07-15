@@ -10,23 +10,28 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.io.File;
+
 public class login extends AppCompatActivity {
 
     DatabaseHelper assetDb;
+
 
     private EditText Username;
     private EditText Password;
     private TextView Info;
     private Button Login;
 
+    private static final String DB_PATH = "data/data/com.swe401.getasset/databases/getAsset.db";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-//        assetDb = new DatabaseHelper(login.this);
-        assetDb = new DatabaseHelper(this);
+
+        doDbCheck();
+        assetDb = new DatabaseHelper(login.this);
 
 
         Username = (EditText) findViewById(R.id.login_username);
@@ -62,6 +67,15 @@ public class login extends AppCompatActivity {
         loadData();
     }
 
+    private void doDbCheck() {
+        try {
+            File file = new File(DB_PATH);
+            file.delete();
+        } catch (Exception ex) {
+        }
+    }
+
+
     public void loadData() {
 
         //UserData
@@ -73,6 +87,37 @@ public class login extends AppCompatActivity {
         assetDb.insertItemData("Chair", "Asset", 200, "Plastic Chair", "Chair");
         assetDb.insertItemData("Microphone", "IT", 5, "Wireless Microphone (requires confirmation letter)", "IT Equipment");
         assetDb.insertItemData("Speaker", "IT", 2, "Portable Speaker (with microphone)", "IT Equipment");
+
+        //ItemQuantity by Date
+        //20/7/2020
+        assetDb.insertItemQuantityData(100, "20/7/2020", 1);
+        assetDb.insertItemQuantityData(200, "20/7/2020", 2);
+        assetDb.insertItemQuantityData(5, "20/7/2020", 3);
+        assetDb.insertItemQuantityData(2, "20/7/2020", 4);
+
+        //21/7/2020
+        assetDb.insertItemQuantityData(100, "21/7/2020", 1);
+        assetDb.insertItemQuantityData(200, "21/7/2020", 2);
+        assetDb.insertItemQuantityData(5, "21/7/2020", 3);
+        assetDb.insertItemQuantityData(2, "21/7/2020", 4);
+
+        //22/7/2020
+        assetDb.insertItemQuantityData(100, "22/7/2020", 1);
+        assetDb.insertItemQuantityData(200, "22/7/2020", 2);
+        assetDb.insertItemQuantityData(5, "22/7/2020", 3);
+        assetDb.insertItemQuantityData(2, "22/7/2020", 4);
+
+        //23/7/2020
+        assetDb.insertItemQuantityData(100, "23/7/2020", 1);
+        assetDb.insertItemQuantityData(200, "23/7/2020", 2);
+        assetDb.insertItemQuantityData(5, "23/7/2020", 3);
+        assetDb.insertItemQuantityData(2, "23/7/2020", 4);
+
+        //24/7/2020
+        assetDb.insertItemQuantityData(100, "24/7/2020", 1);
+        assetDb.insertItemQuantityData(200, "24/7/2020", 2);
+        assetDb.insertItemQuantityData(5, "24/7/2020", 3);
+        assetDb.insertItemQuantityData(2, "24/7/2020", 4);
 
         //ClassroomData
         assetDb.insertClassroomData("B1 101B");

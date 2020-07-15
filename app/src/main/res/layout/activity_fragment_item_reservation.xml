@@ -175,44 +175,13 @@
             android:layout_below="@id/button_chair"
             android:layout_marginStart="30dp"
             android:layout_marginLeft="30dp"
-            android:layout_marginTop="60dp"
+            android:layout_marginTop="90dp"
             android:layout_marginEnd="50dp"
             android:layout_marginRight="50dp"
             android:text="@string/ITEquip"
             android:textColor="#130202"
             android:textSize="20sp"
             android:textStyle="bold" />
-
-
-        <TextView
-            android:id="@+id/ITQuantity"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/button_IT"
-            android:layout_toEndOf="@id/button_IT"
-            android:layout_below="@id/ITEquipment"
-            android:layout_marginTop="10dp"
-            android:layout_marginStart="30dp"
-            android:layout_marginLeft="30dp"
-            android:textColor="#130202"
-            android:textSize="20sp"
-            android:text="@string/quantity" />
-
-        <TextView
-            android:id="@+id/ITAmount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/ITEquipment"
-            android:layout_marginTop="10dp"
-            android:layout_marginStart="5dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="50dp"
-            android:layout_marginEnd="50dp"
-            android:layout_toRightOf="@id/ITQuantity"
-            android:layout_toEndOf="@id/ITQuantity"
-            android:textColor="#130202"
-            android:textSize="20sp"
-            android:text="@string/quantity"/>
 
 
     </RelativeLayout>

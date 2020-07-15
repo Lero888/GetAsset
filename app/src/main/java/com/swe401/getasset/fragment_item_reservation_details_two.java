@@ -1,5 +1,6 @@
 package com.swe401.getasset;
 
+import android.database.Cursor;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -10,6 +11,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 /**
@@ -27,9 +30,16 @@ public class fragment_item_reservation_details_two extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    DatabaseHelper assetDb;
     Fragment fragment;
     private Button save;
     private Button cancel;
+    private ImageView img;
+    private TextView itemName;
+    private TextView departmentName;
+    private TextView description;
+    private TextView quantity;
 
     public fragment_item_reservation_details_two() {
         // Required empty public constructor
@@ -67,9 +77,50 @@ public class fragment_item_reservation_details_two extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         final View view = inflater.inflate(R.layout.fragment_item_reservation_details_two, container, false);
+        assetDb = new DatabaseHelper(getActivity());
 
         save = (Button) view.findViewById(R.id.button_save);
         cancel = (Button) view.findViewById(R.id.button_cancel);
+        assetDb = new DatabaseHelper(getActivity());
+
+        // find View
+        img = (ImageView) view.findViewById(R.id.image_item);
+        itemName = (TextView) view.findViewById(R.id.itemName2);
+        departmentName = (TextView) view.findViewById(R.id.itemDepartment2);
+        description = (TextView) view.findViewById(R.id.itemDesc2);
+        quantity = (TextView) view.findViewById(R.id.itemAmount);
+
+        // Set item info
+        Bundle bundle = this.getArguments();
+        String item = "";
+
+        if(bundle != null){
+            item = bundle.getString("item");
+        }
+
+        Cursor res = assetDb.fetchItemData(item);
+
+        if (item == "Table") {
+
+            img.setImageResource(R.drawable.table);
+        } else if (item == "Chair"){
+            img.setImageResource(R.drawable.chair);
+
+        } else if (item == "Microphone") {
+            img.setImageResource(R.drawable.microphone);
+        } else {
+            img.setImageResource(R.drawable.speaker);
+        }
+
+        if (res.getCount() == 0) {
+
+            // Show message
+        } else {
+            itemName.setText(res.getString(1));
+            departmentName.setText(res.getString(2));
+            description.setText(res.getString(4));
+//            quantity.setText(String.valueOf(res.getInt(4)));
+        }
 
         // validation and save to database
         save.setOnClickListener(new View.OnClickListener() {

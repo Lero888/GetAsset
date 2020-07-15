@@ -81,6 +81,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 //        SQLiteDatabase db = this.getWritableDatabase();
     }
 
+    // Create Operation
 
     @Override
     public void onCreate(SQLiteDatabase db) {
@@ -92,7 +93,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     + USER_EMAIL + " TEXT);");
 
 
-            db.execSQL("CREATE TABLE "+ TABLE_ITEM+ "( " + IID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+            db.execSQL("CREATE TABLE "+ TABLE_ITEM + "( " + IID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                     + ITEM_NAME + " TEXT, "
                     + ITEM_DEPARTMENT + " TEXT, "
                     + ITEM_QUANTITY + " INTEGER, "
@@ -101,32 +102,38 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
             db.execSQL("CREATE TABLE "+ TABLE_ITEM_QUANTITY + "( " + IQID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                     + QUANTITY_LEFT + " INTEGER, "
-                    + QUANTITY_DATE + " INTEGER, "
-                    + " FOREIGN KEY (" + FK_IQID_IID + ") REFERENCES " + TABLE_ITEM + "(" + IID + "));");
+                    + QUANTITY_DATE + " TEXT, "
+                    + FK_IQID_IID + " INTEGER, "
+                    + "FOREIGN KEY(" + FK_IQID_IID + ") REFERENCES " + TABLE_ITEM + "(" + IID + "));");
 
 
             db.execSQL("CREATE TABLE "+ TABLE_ITEM_BORROW + "( " + IBID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                    + BORROW_DATE + " INTEGER, "
+                    + BORROW_DATE + " TEXT, "
                     + BORROW_QUANTITY + " INTEGER, "
                     + BORROW_STATUS + " TEXT, "
                     + TEL_NO + " TEXT, "
                     + BORROW_USAGE + " TEXT, "
-                    + " FOREIGN KEY (" + FK_IBID_IID + ") REFERENCES " + TABLE_ITEM + "(" + IID + "), "
-                    + " FOREIGN KEY (" + FK_IBID_UID + ") REFERENCES " + TABLE_USER + "(" + UID + "));");
+                    + FK_IBID_IID + " INTEGER, "
+                    + FK_IBID_UID + " INTEGER, "
+                    + " FOREIGN KEY (" + FK_IBID_IID + ") REFERENCES " + TABLE_ITEM + " (" + IID + "), "
+                    + " FOREIGN KEY (" + FK_IBID_UID + ") REFERENCES " + TABLE_USER + " (" + UID + "));");
 
             db.execSQL("CREATE TABLE "+ TABLE_CLASSROOMS + "( " + CID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                    + ROOM_NAME + "TEXT);");
+                    + ROOM_NAME + " TEXT);");
 
             db.execSQL("CREATE TABLE "+ TABLE_TIME + "( " + TID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                    + ROOM_DATE + "TEXT, "
-                    + ROOM_TIME + "TEXT, "
-                    + STATUS + "TEXT, "
+                    + ROOM_DATE + " TEXT, "
+                    + ROOM_TIME + " TEXT, "
+                    + STATUS + " TEXT, "
+                    + FK_TID_CID + " INTEGER, "
                     + " FOREIGN KEY (" + FK_TID_CID + ") REFERENCES " + TABLE_CLASSROOMS + "(" + CID + "));");
 
 
             db.execSQL("CREATE TABLE "+ TABLE_ROOM_BORROW+ "( " + CBID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                    + ROOM_USAGE + "TEXT, "
-                    + ROOM_TEL_NO + "TEXT, "
+                    + ROOM_USAGE + " TEXT, "
+                    + ROOM_TEL_NO + " TEXT, "
+                    + FK_CBID_TID + " INTEGER, "
+                    + FK_CBID_UID + " INTEGER, "
                     +  " FOREIGN KEY (" + FK_CBID_UID + ") REFERENCES " + TABLE_USER + "(" + UID + "), "
                     + " FOREIGN KEY (" + FK_CBID_TID + ") REFERENCES " + TABLE_TIME + "(" + TID + "));");
 
@@ -157,6 +164,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 //            db.close();
 //        }
 //    }
+
+    // Insert Operation
 
     public boolean insertUserData(String name, String password, String email) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -191,6 +200,22 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
 
+    public boolean insertItemQuantityData(Integer quantityLeft, String date, Integer itemID) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValue = new ContentValues();
+
+        contentValue.put(QUANTITY_LEFT, quantityLeft);
+        contentValue.put(QUANTITY_DATE, date);
+        contentValue.put(FK_IQID_IID, itemID);
+
+        long res = db.insert(TABLE_ITEM_QUANTITY, null, contentValue);
+        db.close();
+
+        if (res == -1) return false;
+        else return true;
+
+    }
+
     public boolean insertClassroomData (String name){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValue = new ContentValues();
@@ -216,18 +241,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         else return true;
     }
 
+    // Get Data Operation
     public Cursor fetchItemData(String item) {
 
         SQLiteDatabase db = this.getReadableDatabase();
 //        List <Object> list = new ArrayList<>();
 //        Cursor cursor = this.database.query(SQLiteHelper.TABLE_NAME_STUDENT, new String[]{SQLiteHelper._ID, SQLiteHelper.NAME, SQLiteHelper.AGE}, null, null, null, null, null);
-        String queryString = "SELECT * FROM " + TABLE_ITEM + " WHERE " + ITEM_NAME + " = " + item;
+        String queryString = "SELECT * FROM " + TABLE_ITEM + " WHERE " + ITEM_NAME + " = '" + item + "';";
         Cursor cursor = db.rawQuery(queryString, null);
-        db.close();
         if (cursor != null) {
 
             cursor.moveToFirst();
         }
+
+        db.close();
 
         return cursor;
     }

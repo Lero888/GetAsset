@@ -35,8 +35,8 @@ public class fragment_item_reservation extends Fragment {
     private ImageButton buttonTable;
     private ImageButton buttonChair;
     private ImageButton buttonIT;
-    private TextView textViewTable;
-    private TextView textViewChair;
+    private TextView quantityTable;
+    private TextView quantityChair;
 
     public fragment_item_reservation() {
         // Required empty public constructor
@@ -68,7 +68,7 @@ public class fragment_item_reservation extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
-//        assetDb = new DatabaseHelper(getActivity());
+        assetDb = new DatabaseHelper(getActivity());
 
 //        coffeeType = (ImageView) findViewById(R.id.imageView3);
 //coffeeType.setImageResource(R.drawable.cappuccino);
@@ -85,21 +85,15 @@ public class fragment_item_reservation extends Fragment {
         buttonTable = (ImageButton) view.findViewById(R.id.button_table);
         buttonChair = (ImageButton) view.findViewById(R.id.button_chair);
         buttonIT = (ImageButton) view.findViewById(R.id.button_IT);
-        textViewTable = (TextView) view.findViewById(R.id.TableAmount);
-        textViewChair = (TextView) view.findViewById(R.id.ChairAmount);
+        quantityTable = (TextView) view.findViewById(R.id.TableAmount);
+        quantityChair = (TextView) view.findViewById(R.id.ChairAmount);
 
         // get Quantity of Table and Chair
         Cursor res = assetDb.fetchItemData("Table");
-
-        if (res.getCount() == 0) {
-
-            // Show message
-        } else {
-            textViewTable.setText(res.getInt(3));
-        }
+        quantityTable.setText(String.valueOf(res.getInt(3)));
 
         res = assetDb.fetchItemData("Chair");
-        textViewChair.setText(res.getInt(3));
+        quantityChair.setText(String.valueOf(res.getInt(3)));
 
         buttonTable.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -107,7 +101,26 @@ public class fragment_item_reservation extends Fragment {
 
                 // Pass message
                 Bundle bundle = new Bundle();
-                bundle.putString("item","table");
+                bundle.putString("item","Table");
+
+                fragment = new fragment_item_reservation_details_one();
+                fragment.setArguments(bundle);
+
+                FragmentManager fm = getFragmentManager();
+                FragmentTransaction ft = fm.beginTransaction();
+                ft.replace(R.id.fragment_container, fragment);
+                ft.addToBackStack("fragment_item_reservation");
+                ft.commit();
+            }
+        });
+
+        buttonChair.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                // Pass message
+                Bundle bundle = new Bundle();
+                bundle.putString("item","Chair");
 
                 fragment = new fragment_item_reservation_details_one();
                 fragment.setArguments(bundle);
