@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.database.Cursor;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -32,6 +33,8 @@ public class fragment_classroom_reservation extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    DatabaseHelper assetDb = new DatabaseHelper(getActivity());
+
     private TextView info;
     private Button book;
 
@@ -187,27 +190,31 @@ public class fragment_classroom_reservation extends Fragment {
         book.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 String st = selectedTime[0];
                 String sd = selectedDate[0];
                 String sr = selectedRoom[0];
 
-                fragment_room_reservation_details nextFrag = new fragment_room_reservation_details();
-                Bundle args = new Bundle();
-                args.putString("Room",sr);
-                args.putString("Date",sd);
-                args.putString("Time",st);
-                nextFrag.setArguments(args);
-                getActivity().getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragment_container, nextFrag)
-                        .addToBackStack(null)
-                        .commit();
+                boolean checkStatus = assetDb.checkRoomStatus(sd,st,sr);
+                if (checkStatus == true){
+                    fragment_room_reservation_details nextFrag = new fragment_room_reservation_details();
+                    Bundle args = new Bundle();
+                    args.putString("Room",sr);
+                    args.putString("Date",sd);
+                    args.putString("Time",st);
+                    nextFrag.setArguments(args);
+                    getActivity().getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.fragment_container, nextFrag)
+                            .addToBackStack(null)
+                            .commit();
+                }
+                else{
+                    info.setText("Room unavailable.");
+                    info.setVisibility(View.VISIBLE);
+                }
 
-                //Intent intent = new Intent(getActivity(), fragment_room_reservation_details.class);
 
-                //intent.putExtra("Time",st);
-                //intent.putExtra("Date",sd);
-                //intent.putExtra("Room",sr);
-                //startActivity(intent);
+
             }
         });
 
