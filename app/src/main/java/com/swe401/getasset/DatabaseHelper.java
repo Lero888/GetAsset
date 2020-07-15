@@ -53,6 +53,27 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String FK_IBID_IID = "itemID";
     public static final String FK_IBID_UID = "userID";
 
+    //table Classrooms
+    public static final String TABLE_CLASSROOMS = "CLASSROOMS";
+    public static final String CID = "CID";
+    public static final String ROOM_NAME ="roomName";
+
+    //table ClassroomsBorrow
+    public static final String TABLE_ROOM_BORROW ="ROOM_BORROW";
+    public static final String CBID ="CBID";
+    public static final String ROOM_USAGE = "roomUsage";
+    public static final String ROOM_TEL_NO = "roomTelNo";
+    public static final String FK_CBID_UID = "userID";
+    public static final String FK_CBID_TID = "timeID";
+
+    //table Time
+    public static final String TABLE_TIME = "TIME";
+    public static final String TID = "TID";
+    public static final String ROOM_DATE = "roomDate";
+    public static final String ROOM_TIME = "roomTime";
+    public static final String STATUS = "status";
+    public static final String FK_TID_CID = "roomID";
+
 
     public DatabaseHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
@@ -92,6 +113,23 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     + BORROW_USAGE + " TEXT, "
                     + " FOREIGN KEY (" + FK_IBID_IID + ") REFERENCES " + TABLE_ITEM + "(" + IID + "), "
                     + " FOREIGN KEY (" + FK_IBID_UID + ") REFERENCES " + TABLE_USER + "(" + UID + "));");
+
+            db.execSQL("CREATE TABLE "+ TABLE_CLASSROOMS + "( " + CID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                    + ROOM_NAME + "TEXT);");
+
+            db.execSQL("CREATE TABLE "+ TABLE_TIME + "( " + TID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                    + ROOM_DATE + "TEXT, "
+                    + ROOM_TIME + "TEXT, "
+                    + STATUS + "TEXT, "
+                    + " FOREIGN KEY (" + FK_TID_CID + ") REFERENCES " + TABLE_CLASSROOMS + "(" + CID + "));");
+
+
+            db.execSQL("CREATE TABLE "+ TABLE_ROOM_BORROW+ "( " + CBID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                    + ROOM_USAGE + "TEXT, "
+                    + ROOM_TEL_NO + "TEXT, "
+                    +  " FOREIGN KEY (" + FK_CBID_UID + ") REFERENCES " + TABLE_USER + "(" + UID + "), "
+                    + " FOREIGN KEY (" + FK_CBID_TID + ") REFERENCES " + TABLE_TIME + "(" + TID + "));");
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -105,6 +143,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_ITEM);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_ITEM_QUANTITY);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_ITEM_BORROW);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_CLASSROOMS);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_ROOM_BORROW);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_TIME);
 
         onCreate(db);
 
@@ -150,6 +191,31 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
 
+    public boolean insertClassroomData (String name){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValue = new ContentValues();
+
+        contentValue.put(ROOM_NAME,name);
+        long res = db.insert(TABLE_CLASSROOMS, null, contentValue);
+
+        if (res == -1) return false;
+        else return true;
+    }
+
+    public boolean insertTimeData (String date, String time, String status, String roomID){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValue = new ContentValues();
+
+        contentValue.put(ROOM_DATE,date);
+        contentValue.put(ROOM_TIME,time);
+        contentValue.put(STATUS,status);
+        contentValue.put(FK_TID_CID,roomID);
+        long res = db.insert(TABLE_TIME, null, contentValue);
+
+        if (res == -1) return false;
+        else return true;
+    }
+
     public Cursor fetchItemData(String item) {
 
         SQLiteDatabase db = this.getReadableDatabase();
@@ -166,6 +232,35 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return cursor;
     }
 
+    public int getRoomID (String name){
+        int roomID=0;
+        SQLiteDatabase db = this.getReadableDatabase();
+        String queryString = "SELECT " + CID + " FROM " + TABLE_CLASSROOMS + "WHERE " + ROOM_NAME + "= " + name;
+        Cursor cursor = db.rawQuery(queryString, null);
+        if (cursor.moveToFirst()) {
+            roomID=cursor.getInt(1);
+
+        }
+        return roomID;
+    }
+
+    public boolean checkRoomStatus (String date, String time, String name){
+        int roomID = getRoomID(name);
+        boolean status = true;
+        SQLiteDatabase db = this.getReadableDatabase();
+        String queryString = "SELECT "+ STATUS + " FROM " + TABLE_TIME + "WHERE " + ROOM_DATE + "= " + date + "AND"
+                + ROOM_TIME + "=" + time +  FK_TID_CID + "=" + roomID;
+        Cursor cursor = db.rawQuery(queryString, null);
+        if (cursor.moveToFirst()) {
+            if (cursor.getString(1).equals("available")){
+                status=true;
+            }else{
+                status =false;
+            }
+        }
+
+        return status;
+    }
 
 
 
