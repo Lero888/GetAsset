@@ -11,11 +11,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.database.Cursor;
-
-import androidx.fragment.app.Fragment;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -33,7 +30,7 @@ public class fragment_item_reservation extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    DatabaseHelper assetDb = new DatabaseHelper(getActivity());
+    DatabaseHelper assetDb;
     Fragment fragment;
     private ImageButton buttonTable;
     private ImageButton buttonChair;
@@ -71,6 +68,7 @@ public class fragment_item_reservation extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
+//        assetDb = new DatabaseHelper(getActivity());
 
 //        coffeeType = (ImageView) findViewById(R.id.imageView3);
 //coffeeType.setImageResource(R.drawable.cappuccino);
@@ -92,6 +90,7 @@ public class fragment_item_reservation extends Fragment {
 
         // get Quantity of Table and Chair
         Cursor res = assetDb.fetchItemData("Table");
+
         if (res.getCount() == 0) {
 
             // Show message

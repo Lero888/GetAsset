@@ -6,15 +6,11 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.Cursor;
-import android.provider.ContactsContract;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
 
-//    private DatabaseHelper db;
+    private Context context;
 
     // name of the database
     public static final String DB_NAME = "getAsset.db";
@@ -60,6 +56,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public DatabaseHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
+        this.context = context;
 //        SQLiteDatabase db = this.getWritableDatabase();
     }
 
@@ -126,7 +123,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValue.put(USER_NAME, name);
         contentValue.put(USER_PW, password);
         contentValue.put(USER_EMAIL, email);
+
         long res = db.insert(TABLE_USER, null, contentValue);
+        db.close();
+
 
         if (res == -1) return false;
         else return true;
@@ -143,6 +143,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValue.put(ITEM_CATEGORY, category);
 
         long res = db.insert(TABLE_ITEM, null, contentValue);
+        db.close();
 
         if (res == -1) return false;
         else return true;
@@ -154,8 +155,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
 //        List <Object> list = new ArrayList<>();
 //        Cursor cursor = this.database.query(SQLiteHelper.TABLE_NAME_STUDENT, new String[]{SQLiteHelper._ID, SQLiteHelper.NAME, SQLiteHelper.AGE}, null, null, null, null, null);
-        String queryString = "SELECT * FROM " + TABLE_ITEM + "WHERE " + ITEM_NAME + "= " + item;
+        String queryString = "SELECT * FROM " + TABLE_ITEM + " WHERE " + ITEM_NAME + " = " + item;
         Cursor cursor = db.rawQuery(queryString, null);
+        db.close();
         if (cursor != null) {
 
             cursor.moveToFirst();
