@@ -26,14 +26,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String USER_PW = "userPassword";
     public static final String USER_EMAIL = "userEmail";
 
+    // table Department
+    public static final String TABLE_DEPARTMENT = "DEPARTMENTS";
+    public static final String DID = "DID";
+    public static final String DEPARTMENT_NAME = "departmentName";
+    public static final String DEPARTMENT_PASSWORD = "departmentPassword";
+
     // table ITEMS
     public static final String TABLE_ITEM = "ITEMS";
     public static final String IID = "IID";
     public static final String ITEM_NAME = "itemName";
-    public static final String ITEM_DEPARTMENT = "itemDepartment";
     public static final String ITEM_QUANTITY = "itemQuantity";
     public static final String ITEM_DESC = "itemDesc";
     public static final String ITEM_CATEGORY = "itemCategory";
+    public static final String FK_IID_DID = "departmentID";
 
 
     // table ItemQuantity
@@ -93,13 +99,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     + USER_PW + " TEXT, "
                     + USER_EMAIL + " TEXT);");
 
+            db.execSQL("CREATE TABLE "+ TABLE_DEPARTMENT + "( " + DID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                    + DEPARTMENT_NAME + " TEXT, "
+                    + DEPARTMENT_PASSWORD + " TEXT);");
 
             db.execSQL("CREATE TABLE "+ TABLE_ITEM + "( " + IID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                     + ITEM_NAME + " TEXT, "
-                    + ITEM_DEPARTMENT + " TEXT, "
                     + ITEM_QUANTITY + " INTEGER, "
                     + ITEM_DESC + " TEXT, "
-                    + ITEM_CATEGORY + " TEXT);");
+                    + ITEM_CATEGORY + " TEXT, "
+                    + FK_IID_DID + " TEXT, "
+                    + "FOREIGN KEY(" + FK_IID_DID + ") REFERENCES " + TABLE_DEPARTMENT + "(" + DID + "));");
+
 
             db.execSQL("CREATE TABLE "+ TABLE_ITEM_QUANTITY + "( " + IQID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                     + QUANTITY_LEFT + " INTEGER, "
@@ -149,6 +160,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_USER);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_ITEM);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_DEPARTMENT);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_ITEM_QUANTITY);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_ITEM_BORROW);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_CLASSROOMS);
@@ -183,21 +195,39 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         else return true;
     }
 
-    public boolean insertItemData(String name, String department, Integer quantity, String desc, String category) {
+
+    public boolean insertDepartmentData(String departmentName, String password) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValue = new ContentValues();
+
+        contentValue.put(DEPARTMENT_NAME, departmentName);
+        contentValue.put(DEPARTMENT_PASSWORD, password);
+
+        long res = db.insert(TABLE_DEPARTMENT, null, contentValue);
+        db.close();
+
+        if (res == -1) return false;
+        else return true;
+    }
+
+    public boolean insertItemData(String name, Integer quantity, String desc, String category, String department) {
+        Integer departmentID = getDepartmentID(department);
+
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValue = new ContentValues();
 
         contentValue.put(ITEM_NAME, name);
-        contentValue.put(ITEM_DEPARTMENT, department);
         contentValue.put(ITEM_QUANTITY, quantity);
         contentValue.put(ITEM_DESC, desc);
         contentValue.put(ITEM_CATEGORY, category);
+        contentValue.put(FK_IID_DID, departmentID);
 
         long res = db.insert(TABLE_ITEM, null, contentValue);
         db.close();
 
         if (res == -1) return false;
         else return true;
+
 
     }
 
@@ -323,6 +353,31 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         itemID = cursor.getInt(0);
         return itemID;
+    }
+
+    public Cursor fetchDepartmentData(String department) {
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        String queryString = "SELECT * FROM " + TABLE_DEPARTMENT + " WHERE " + DEPARTMENT_NAME + " = '" + department + "';";
+        Cursor cursor = db.rawQuery(queryString, null);
+        if (cursor != null) {
+
+            cursor.moveToFirst();
+        }
+
+        db.close();
+
+        return cursor;
+    }
+
+
+    public int getDepartmentID(String department) {
+
+        int departmentID;
+        Cursor cursor = fetchDepartmentData(department);
+
+        departmentID = cursor.getInt(0);
+        return departmentID;
     }
 
     public Cursor fetchItemQuantityData(String item, String date) {

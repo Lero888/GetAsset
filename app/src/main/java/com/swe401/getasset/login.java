@@ -90,11 +90,16 @@ public class login extends AppCompatActivity {
         assetDb.insertUserData("LEE ROU", "hello", "swe1704655@xmu.edu.my");
         assetDb.insertUserData("LIM CAROL", "hello", "swe1704205@xmu.edu.my");
 
+        //DepartmentData
+        assetDb.insertDepartmentData("Asset", "704204");
+        assetDb.insertDepartmentData("IT", "704655");
+
         //ItemData
-        assetDb.insertItemData("Table", "Asset", 100, "Classroom Table", "Table");
-        assetDb.insertItemData("Chair", "Asset", 200, "Plastic Chair", "Chair");
-        assetDb.insertItemData("Microphone", "IT", 5, "Wireless Microphone (requires confirmation letter)", "IT Equipment");
-        assetDb.insertItemData("Speaker", "IT", 2, "Portable Speaker (with microphone)", "IT Equipment");
+        assetDb.insertItemData("Table", 100, "Classroom Table", "Table", "Asset");
+        assetDb.insertItemData("Chair",  200, "Plastic Chair", "Chair", "Asset");
+        assetDb.insertItemData("Microphone", 5, "Wireless Microphone (requires confirmation letter)", "IT Equipment", "IT");
+        assetDb.insertItemData("Speaker", 2, "Portable Speaker (with microphone)", "IT Equipment", "IT");
+
 
         //ItemQuantity by Date
         //20/7/2020

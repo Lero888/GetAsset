@@ -167,6 +167,8 @@
     <string name="required_usage">Usage is required.</string>
     <string name="required_phoneNum">Phone number is required.</string>
     <string name="error_quantity_warning">"Please input amount between 1 to %1$d"</string>
+    <string name="itemCapital">ITEM</string>
+    <string name="classroomCapital">CLASSROOM</string>
 
 
 </resources>

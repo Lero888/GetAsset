@@ -40,7 +40,9 @@ public class fragment_item_reservation_details_two extends Fragment {
     private String mParam2;
 
     DatabaseHelper assetDb;
+    session_management session;
     Fragment fragment;
+
     private Button save;
     private Button cancel;
     private ImageView img;
@@ -94,6 +96,7 @@ public class fragment_item_reservation_details_two extends Fragment {
         // Inflate the layout for this fragment
         final View view = inflater.inflate(R.layout.fragment_item_reservation_details_two, container, false);
         assetDb = new DatabaseHelper(getActivity());
+        session = new session_management(getActivity().getApplicationContext());
 
         // find View
         img = view.findViewById(R.id.image_item);
