@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -46,10 +47,15 @@ public class fragment_item_reservation_details_two extends Fragment {
     private TextView itemName;
     private TextView departmentName;
     private TextView description;
+
+    private EditText phoneNo;
     private Spinner spinnerDate;
     private String dateSelected;
     private EditText itemQuantity;
+    private EditText itemUsage;
+    private TextView errorPhone;
     private TextView errorQuantity;
+    private TextView errorUsage;
 
     public fragment_item_reservation_details_two() {
         // Required empty public constructor
@@ -94,12 +100,19 @@ public class fragment_item_reservation_details_two extends Fragment {
         itemName = view.findViewById(R.id.itemName2);
         departmentName = view.findViewById(R.id.itemDepartment2);
         description = view.findViewById(R.id.itemDesc2);
+
+
+        phoneNo = view.findViewById(R.id.IR_edit_phone);
+        spinnerDate = view.findViewById(R.id.spinner_item_Date);
         itemQuantity = view.findViewById(R.id.IR_edit_amount);
+        itemUsage = view.findViewById(R.id.editTextUsage);
+
+        errorPhone = view.findViewById(R.id.error_phone);
+        errorQuantity = view.findViewById(R.id.error_amount);
+        errorUsage = view.findViewById(R.id.error_usage);
+
         save = view.findViewById(R.id.button_save);
         cancel = view.findViewById(R.id.button_cancel);
-        spinnerDate = view.findViewById(R.id.spinner_item_Date);
-        errorQuantity = view.findViewById(R.id.error_amount);
-
 
         // Set item info
         Bundle bundle = this.getArguments();
@@ -151,9 +164,6 @@ public class fragment_item_reservation_details_two extends Fragment {
         });
 
 
-//        dateSelected = spinnerDate.getSelectedItem().toString();
-
-
         spinnerDate.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -169,6 +179,7 @@ public class fragment_item_reservation_details_two extends Fragment {
 
         // Quantity
         final String finalItem = item;
+        final boolean[] quantityTrue = {false};
         itemQuantity.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -178,27 +189,36 @@ public class fragment_item_reservation_details_two extends Fragment {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
+                if(!s.toString().trim().equals("")) {
+
+                    int amount = Integer.parseInt(s.toString());
+                    Cursor cursor = assetDb.fetchItemQuantityData(finalItem, dateSelected);
+                    if (cursor.getCount() == 0) {
+
+                        Log.v("Error", "No value is found");
+                    } else {
+                        int quanLeft = cursor.getInt(1);
+                        if (amount > quanLeft || quanLeft < 1) {
+                            errorQuantity.setVisibility(View.VISIBLE);
+                            errorQuantity.setText(getString(R.string.error_quantity_warning, quanLeft));
+                            quantityTrue[0] = false;
+                        } else {
+                            errorQuantity.setVisibility(View.INVISIBLE);
+                            quantityTrue[0] = true;
+                        }
+                    }
+                }
+
+
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-
-                int amount = Integer.parseInt(s.toString());
-                Cursor cursor = assetDb.fetchItemQuantityData(finalItem, dateSelected);
-                if (cursor.getCount() == 0) {
-
-                    Log.v("Error", "No value is found");
-                } else {
-                    int quanLeft = cursor.getInt(1);
-                    if (quanLeft > amount || quanLeft < 1) {
-                        errorQuantity.setText("Please input amount between 1 to " + quanLeft);
-                    }
-                }
-
             }
         });
 
         // validation and save to database
+        final String finalItem1 = item;
         save.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -207,11 +227,61 @@ public class fragment_item_reservation_details_two extends Fragment {
 //                        getResources().getString(R.string.item_reserve_successful),
 //                        Toast.LENGTH_SHORT).show();
 
-                fragment = new fragment_status();
-                FragmentManager fm = getFragmentManager();
-                FragmentTransaction ft = fm.beginTransaction();
-                ft.replace(R.id.fragment_container, fragment);
-                ft.commit();
+
+                // Validate if empty
+                if (TextUtils.isEmpty(phoneNo.getText()) || TextUtils.isEmpty(itemQuantity.getText()) || TextUtils.isEmpty(itemUsage.getText())) {
+
+                    if (TextUtils.isEmpty(phoneNo.getText())) {
+                        errorPhone.setVisibility(View.VISIBLE);
+                        errorPhone.setText(R.string.required_phoneNum);
+                    } else {
+                        errorPhone.setVisibility(View.INVISIBLE);
+                    }
+
+                    if (TextUtils.isEmpty(itemQuantity.getText())) {
+                        errorQuantity.setVisibility(View.VISIBLE);
+                        errorQuantity.setText(R.string.required_quantity);
+                    } else {
+                        errorQuantity.setVisibility(View.INVISIBLE);
+                    }
+
+                    if (TextUtils.isEmpty(itemUsage.getText())) {
+                        errorUsage.setVisibility(View.VISIBLE);
+                        errorUsage.setText(R.string.required_usage);
+                    } else {
+
+                        errorUsage.setVisibility(View.INVISIBLE);
+                    }
+
+                    Toast.makeText(getContext(), "Please fill in all details.", Toast.LENGTH_SHORT).show();
+
+                } else {
+
+                    errorPhone.setVisibility(View.INVISIBLE);
+                    errorUsage.setVisibility(View.INVISIBLE);
+
+                    // Validate if the quantity is in acceptable range
+                    if (quantityTrue[0]) {
+
+                        // Save into database
+                        assetDb.insertItemBorrowData(dateSelected, Integer.parseInt(String.valueOf(itemQuantity.getText())),
+                                "Borrowed", String.valueOf(phoneNo.getText()), String.valueOf(itemUsage.getText()), finalItem1) ;
+
+                        // Go to reservation status
+                        fragment = new fragment_status();
+                        FragmentManager fm = getFragmentManager();
+                        FragmentTransaction ft = fm.beginTransaction();
+                        ft.replace(R.id.fragment_container, fragment);
+                        ft.commit();
+
+                        Toast.makeText(getContext(), "The reservation is successful.", Toast.LENGTH_SHORT).show();
+
+                    } else {
+                        Toast.makeText(getContext(), "Please fill in the quantity within the available range.", Toast.LENGTH_SHORT).show();
+                    }
+
+                }
+
             }
         });
 

@@ -182,10 +182,22 @@
                 android:inputType="phone" />
 
             <TextView
-                android:id="@+id/IR_reservation_date"
+                android:id="@+id/error_phone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/IR_edit_phone"
+                android:layout_marginStart="50dp"
+                android:layout_marginLeft="50dp"
+                android:layout_marginTop="6dp"
+                android:textColor="#FF0000"
+                android:visibility="invisible"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/IR_reservation_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/error_phone"
                 android:layout_marginStart="50dp"
                 android:layout_marginLeft="50dp"
                 android:layout_marginTop="20dp"
@@ -227,6 +239,7 @@
                 android:layout_marginLeft="50dp"
                 android:layout_marginTop="10dp"
                 android:background="#EAE4E4"
+                android:maxLength="4"
                 android:ems="10"
                 android:inputType="number" />
 
@@ -271,11 +284,23 @@
                 android:gravity="start|top"
                 android:inputType="textMultiLine" />
 
+            <TextView
+                android:id="@+id/error_usage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/editTextUsage"
+                android:layout_marginStart="50dp"
+                android:layout_marginLeft="50dp"
+                android:layout_marginTop="6dp"
+                android:textColor="#FF0000"
+                android:visibility="invisible"
+                android:textSize="15sp" />
+
             <Button
                 android:id="@+id/button_save"
                 android:layout_width="120dp"
                 android:layout_height="50dp"
-                android:layout_below="@id/editTextUsage"
+                android:layout_below="@id/error_usage"
                 android:layout_alignParentBottom="true"
                 android:layout_marginStart="80dp"
                 android:layout_marginLeft="80dp"

@@ -163,6 +163,10 @@
     <string name="cancel">CANCEL</string>
     <string name="save">SAVE</string>
     <string name="quantity_available">Quantity Available:</string>
+    <string name="required_quantity">Quantity is required.</string>
+    <string name="required_usage">Usage is required.</string>
+    <string name="required_phoneNum">Phone number is required.</string>
+    <string name="error_quantity_warning">"Please input amount between 1 to %1$d"</string>
 
 
 </resources>

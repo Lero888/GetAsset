@@ -33,7 +33,7 @@ public class fragment_classroom_reservation extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    DatabaseHelper assetDb = new DatabaseHelper(getActivity());
+    DatabaseHelper assetDb;
 
     private TextView info;
     private Button book;
@@ -84,6 +84,8 @@ public class fragment_classroom_reservation extends Fragment {
        final View view = inflater.inflate(R.layout.activity_fragment_classroom_reservation, container, false);
         info = (TextView) view.findViewById(R.id.Info);
         book = (Button) view.findViewById(R.id.button_book);
+        assetDb = new DatabaseHelper(getActivity());
+
         final String[] selectedDate = new String[1];
         final String[] selectedTime = new String[1];
         final String[] selectedRoom = new String[1];
