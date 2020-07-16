@@ -7,11 +7,18 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,7 +46,10 @@ public class fragment_item_reservation_details_two extends Fragment {
     private TextView itemName;
     private TextView departmentName;
     private TextView description;
-    private TextView quantity;
+    private Spinner spinnerDate;
+    private String dateSelected;
+    private EditText itemQuantity;
+    private TextView errorQuantity;
 
     public fragment_item_reservation_details_two() {
         // Required empty public constructor
@@ -79,16 +89,17 @@ public class fragment_item_reservation_details_two extends Fragment {
         final View view = inflater.inflate(R.layout.fragment_item_reservation_details_two, container, false);
         assetDb = new DatabaseHelper(getActivity());
 
-        save = (Button) view.findViewById(R.id.button_save);
-        cancel = (Button) view.findViewById(R.id.button_cancel);
-        assetDb = new DatabaseHelper(getActivity());
-
         // find View
-        img = (ImageView) view.findViewById(R.id.image_item);
-        itemName = (TextView) view.findViewById(R.id.itemName2);
-        departmentName = (TextView) view.findViewById(R.id.itemDepartment2);
-        description = (TextView) view.findViewById(R.id.itemDesc2);
-        quantity = (TextView) view.findViewById(R.id.itemAmount);
+        img = view.findViewById(R.id.image_item);
+        itemName = view.findViewById(R.id.itemName2);
+        departmentName = view.findViewById(R.id.itemDepartment2);
+        description = view.findViewById(R.id.itemDesc2);
+        itemQuantity = view.findViewById(R.id.IR_edit_amount);
+        save = view.findViewById(R.id.button_save);
+        cancel = view.findViewById(R.id.button_cancel);
+        spinnerDate = view.findViewById(R.id.spinner_item_Date);
+        errorQuantity = view.findViewById(R.id.error_amount);
+
 
         // Set item info
         Bundle bundle = this.getArguments();
@@ -98,29 +109,94 @@ public class fragment_item_reservation_details_two extends Fragment {
             item = bundle.getString("item");
         }
 
-        Cursor res = assetDb.fetchItemData(item);
 
-        if (item == "Table") {
+        if (item.equals("Table")) {
 
             img.setImageResource(R.drawable.table);
-        } else if (item == "Chair"){
+        } else if (item.equals("Chair")){
             img.setImageResource(R.drawable.chair);
 
-        } else if (item == "Microphone") {
+        } else if (item.equals("Microphone")) {
             img.setImageResource(R.drawable.microphone);
         } else {
             img.setImageResource(R.drawable.speaker);
         }
 
+        Cursor res = assetDb.fetchItemData(item);
         if (res.getCount() == 0) {
 
-            // Show message
+            Log.v("Error", "No value is found");
         } else {
             itemName.setText(res.getString(1));
             departmentName.setText(res.getString(2));
             description.setText(res.getString(4));
-//            quantity.setText(String.valueOf(res.getInt(4)));
         }
+
+        // Date
+        final String[] selectedDate = new String[1];
+        ArrayAdapter<String> myAdapter_date = new ArrayAdapter<String>(getActivity(),
+                android.R.layout.simple_list_item_1,getResources().getStringArray(R.array.dates));
+        myAdapter_date.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerDate.setAdapter(myAdapter_date);
+        spinnerDate.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                selectedDate[0] = adapterView.getItemAtPosition(i).toString();
+                Log.d(selectedDate[0],"test");
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+
+//        dateSelected = spinnerDate.getSelectedItem().toString();
+
+
+        spinnerDate.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                dateSelected = parent.getSelectedItem().toString();
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        // Quantity
+        final String finalItem = item;
+        itemQuantity.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+                int amount = Integer.parseInt(s.toString());
+                Cursor cursor = assetDb.fetchItemQuantityData(finalItem, dateSelected);
+                if (cursor.getCount() == 0) {
+
+                    Log.v("Error", "No value is found");
+                } else {
+                    int quanLeft = cursor.getInt(1);
+                    if (quanLeft > amount || quanLeft < 1) {
+                        errorQuantity.setText("Please input amount between 1 to " + quanLeft);
+                    }
+                }
+
+            }
+        });
 
         // validation and save to database
         save.setOnClickListener(new View.OnClickListener() {

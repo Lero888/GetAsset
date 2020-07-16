@@ -162,6 +162,7 @@
     </string>
     <string name="cancel">CANCEL</string>
     <string name="save">SAVE</string>
+    <string name="quantity_available">Quantity Available:</string>
 
 
 </resources>

@@ -82,11 +82,11 @@ public class fragment_item_reservation extends Fragment {
         final View view  = inflater.inflate(R.layout.activity_fragment_item_reservation, container, false);
 
         // find view
-        buttonTable = (ImageButton) view.findViewById(R.id.button_table);
-        buttonChair = (ImageButton) view.findViewById(R.id.button_chair);
-        buttonIT = (ImageButton) view.findViewById(R.id.button_IT);
-        quantityTable = (TextView) view.findViewById(R.id.TableAmount);
-        quantityChair = (TextView) view.findViewById(R.id.ChairAmount);
+        buttonTable = view.findViewById(R.id.button_table);
+        buttonChair = view.findViewById(R.id.button_chair);
+        buttonIT = view.findViewById(R.id.button_IT);
+        quantityTable = view.findViewById(R.id.TableAmount);
+        quantityChair = view.findViewById(R.id.ChairAmount);
 
         // get Quantity of Table and Chair
         Cursor res = assetDb.fetchItemData("Table");

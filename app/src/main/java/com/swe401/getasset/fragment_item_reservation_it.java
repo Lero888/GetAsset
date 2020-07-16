@@ -77,10 +77,10 @@ public class fragment_item_reservation_it extends Fragment {
         // Inflate the layout for this fragment
         final View view = inflater.inflate(R.layout.fragment_item_reservation_it, container, false);
 
-        buttonSpeaker = (ImageButton) view.findViewById(R.id.button_speaker);
-        buttonMicrophone = (ImageButton) view.findViewById(R.id.button_mic);
-        quantitySpeaker = (TextView) view.findViewById(R.id.speakerAmount);
-        quantityMicrophone = (TextView) view.findViewById(R.id.micAmount);
+        buttonSpeaker = view.findViewById(R.id.button_speaker);
+        buttonMicrophone = view.findViewById(R.id.button_mic);
+        quantitySpeaker = view.findViewById(R.id.speakerAmount);
+        quantityMicrophone = view.findViewById(R.id.micAmount);
 
         // get Quantity of Speaker and Mic
         Cursor res = assetDb.fetchItemData("Speaker");

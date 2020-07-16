@@ -34,10 +34,11 @@ public class login extends AppCompatActivity {
         assetDb = new DatabaseHelper(login.this);
 
 
-        Username = (EditText) findViewById(R.id.login_username);
-        Password = (EditText) findViewById(R.id.login_password);
-        Info = (TextView) findViewById(R.id.Info);
-        Login = (Button) findViewById(R.id.login_button);
+        // find view
+        Username = findViewById(R.id.login_username);
+        Password = findViewById(R.id.login_password);
+        Info = findViewById(R.id.Info);
+        Login = findViewById(R.id.login_button);
 
 
         Login.setOnClickListener(new View.OnClickListener() {
@@ -72,6 +73,7 @@ public class login extends AppCompatActivity {
             File file = new File(DB_PATH);
             file.delete();
         } catch (Exception ex) {
+            ex.printStackTrace();
         }
     }
 

@@ -5,10 +5,12 @@ import android.database.Cursor;
 import android.media.Image;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +18,9 @@ import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import static android.widget.Toast.makeText;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -40,7 +45,7 @@ public class fragment_item_reservation_details_one extends Fragment {
     private TextView itemName;
     private TextView departmentName;
     private TextView description;
-    private TextView quantity;
+    private TextView itemQuantity;
     private CalendarView calendarView;
 
     public fragment_item_reservation_details_one() {
@@ -82,13 +87,13 @@ public class fragment_item_reservation_details_one extends Fragment {
         assetDb = new DatabaseHelper(getActivity());
 
         // find View
-        book = (Button) view.findViewById(R.id.button_book_item);
-        img = (ImageView) view.findViewById(R.id.image_item);
-        itemName = (TextView) view.findViewById(R.id.itemName2);
-        departmentName = (TextView) view.findViewById(R.id.itemDepartment2);
-        description = (TextView) view.findViewById(R.id.itemDesc2);
-        quantity = (TextView) view.findViewById(R.id.itemAmount);
-        calendarView = (CalendarView) view.findViewById(R.id.calendarView);
+        book = view.findViewById(R.id.button_book_item);
+        img = view.findViewById(R.id.image_item);
+        itemName = view.findViewById(R.id.itemName2);
+        departmentName = view.findViewById(R.id.itemDepartment2);
+        description = view.findViewById(R.id.itemDesc2);
+        itemQuantity = view.findViewById(R.id.itemAmountDate);
+        calendarView = view.findViewById(R.id.calendarView);
 
         Bundle bundle = this.getArguments();
         String item = "";
@@ -99,13 +104,13 @@ public class fragment_item_reservation_details_one extends Fragment {
 
         Cursor res = assetDb.fetchItemData(item);
 
-        if (item == "Table") {
+        if (item.equals("Table")) {
 
             img.setImageResource(R.drawable.table);
-        } else if (item == "Chair"){
+        } else if (item.equals("Chair")) {
             img.setImageResource(R.drawable.chair);
 
-        } else if (item == "Microphone") {
+        } else if (item.equals("Microphone")) {
             img.setImageResource(R.drawable.microphone);
         } else {
             img.setImageResource(R.drawable.speaker);
@@ -113,15 +118,35 @@ public class fragment_item_reservation_details_one extends Fragment {
 
         if (res.getCount() == 0) {
 
+            Log.v("Error", "No value is found");
             // Show message
         } else {
             itemName.setText(res.getString(1));
             departmentName.setText(res.getString(2));
             description.setText(res.getString(4));
-//            quantity.setText(String.valueOf(res.getInt(4)));
         }
 
         calendarView.setMinDate(System.currentTimeMillis() - 1000);
+
+        final String finalItem1 = item;
+        calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+            @Override
+            public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
+                month+=1;
+                String date = dayOfMonth + "/" + month + "/" + year;
+
+                Cursor res = assetDb.fetchItemQuantityData(finalItem1, date);
+                if (res.getCount() == 0) {
+
+                    Toast.makeText(getContext(), date, Toast.LENGTH_LONG).show();
+
+                    // Show message
+                } else {
+                    itemQuantity.setText(String.valueOf(res.getInt(1)));
+                }
+
+            }
+        });
 
 
         // go to booking fragment

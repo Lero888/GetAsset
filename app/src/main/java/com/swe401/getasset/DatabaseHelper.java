@@ -259,15 +259,48 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return cursor;
     }
 
+
+    public int getItemID(String item) {
+
+        int itemID;
+        Cursor cursor = fetchItemData(item);
+
+        itemID = cursor.getInt(0);
+        return itemID;
+    }
+
+    public Cursor fetchItemQuantityData(String item, String date) {
+
+        int itemID = getItemID(item);
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String queryString = "SELECT * FROM " + TABLE_ITEM_QUANTITY + " WHERE " + FK_IQID_IID + " = " + itemID + " AND " +
+                QUANTITY_DATE + " = '" + date + "';";
+
+        Cursor cursor = db.rawQuery(queryString, null);
+        if (cursor != null) {
+            cursor.moveToFirst();
+        }
+
+        db.close();
+
+        return cursor;
+    }
+
+
     public int getRoomID (String name){
         int roomID=0;
         SQLiteDatabase db = this.getReadableDatabase();
-        String queryString = "SELECT " + CID + " FROM " + TABLE_CLASSROOMS + "WHERE " + ROOM_NAME + "= " + name;
+        String queryString = "SELECT " + CID + " FROM " + TABLE_CLASSROOMS + "WHERE " + ROOM_NAME + "= '" + name + "';";
         Cursor cursor = db.rawQuery(queryString, null);
         if (cursor.moveToFirst()) {
             roomID=cursor.getInt(1);
 
         }
+
+        cursor.close();
+
+        db.close();
         return roomID;
     }
 
@@ -275,8 +308,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         int roomID = getRoomID(name);
         boolean status = true;
         SQLiteDatabase db = this.getReadableDatabase();
-        String queryString = "SELECT "+ STATUS + " FROM " + TABLE_TIME + "WHERE " + ROOM_DATE + "= " + date + "AND"
-                + ROOM_TIME + "=" + time +  FK_TID_CID + "=" + roomID;
+        String queryString = "SELECT " + STATUS + " FROM " + TABLE_TIME + " WHERE " + ROOM_DATE + " = '" + date + "' AND "
+                + ROOM_TIME + "=" + time +  FK_TID_CID + " = " + roomID + ";";
         Cursor cursor = db.rawQuery(queryString, null);
         if (cursor.moveToFirst()) {
             if (cursor.getString(1).equals("available")){
@@ -286,6 +319,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             }
         }
 
+        db.close();
+        cursor.close();
         return status;
     }
 

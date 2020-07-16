@@ -174,10 +174,10 @@
                 android:textColor="#130202"
                 android:textSize="20sp"
                 android:textStyle="bold"
-                android:text="@string/quantity" />
+                android:text="@string/quantity_available" />
 
             <TextView
-                android:id="@+id/itemAmount"
+                android:id="@+id/itemAmountDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/calendarView"
@@ -190,7 +190,7 @@
                 android:layout_toEndOf="@id/itemQuantity"
                 android:textColor="#130202"
                 android:textSize="20sp"
-                android:text="Quantity" />
+                android:text="Please select a date." />
 
             <Button
                 android:id="@+id/button_book_item"
