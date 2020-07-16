@@ -3,6 +3,7 @@ package com.swe401.getasset;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -15,7 +16,7 @@ import java.io.File;
 public class login extends AppCompatActivity {
 
     DatabaseHelper assetDb;
-
+    session_management session;
 
     private EditText Username;
     private EditText Password;
@@ -31,21 +32,23 @@ public class login extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         doDbCheck();
-        assetDb = new DatabaseHelper(login.this);
 
+        assetDb = new DatabaseHelper(login.this);
+        loadData();
 
         // find view
         Username = findViewById(R.id.login_username);
         Password = findViewById(R.id.login_password);
         Info = findViewById(R.id.Info);
         Login = findViewById(R.id.login_button);
-
+        session = new session_management(getApplicationContext());
 
         Login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String un = Username.getText().toString();
                 String pw = Password.getText().toString();
+                boolean validateUser = assetDb.validateUser(un,pw);
                 if (un.length()==0){
                     Username.requestFocus();
                     Username.setError("FIELD CANNOT BE EMPTY");
@@ -54,18 +57,21 @@ public class login extends AppCompatActivity {
                     Password.requestFocus();
                     Password.setError("FIELD CANNOT BE EMPTY");
                 }
-                else if ((un.equals("test")) && (pw.equals("1234"))) {
-                    Intent intent = new Intent(login.this, MainActivity.class);
+                else if(validateUser) {
+               // else if ((un.equals("test")) && (pw.equals("1234"))) {
+                    String email = assetDb.getUserEmail(un,pw);
+                    session.createLoginSession(un, email);
+                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                     startActivity(intent);
 
-                } else {
+                }else if (! validateUser){
                     Info.setText("Username or password invalid. Please try again.");
                     Info.setVisibility(View.VISIBLE);
                 }
             }
         });
 
-        loadData();
+
     }
 
     private void doDbCheck() {

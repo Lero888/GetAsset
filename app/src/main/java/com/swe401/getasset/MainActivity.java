@@ -18,13 +18,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private DrawerLayout drawer;
     private NavigationView navView;
     DatabaseHelper assetDb;
+    session_management session;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         assetDb = new DatabaseHelper(this);
-
+        session = new session_management(getApplicationContext());
         // nav
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -81,6 +82,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case R.id.nav_share:
                 Toast.makeText(this, "Share to WhatsApp", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.logout:
+                session.logoutUser();
                 break;
 
         }

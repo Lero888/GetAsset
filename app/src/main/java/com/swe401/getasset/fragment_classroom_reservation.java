@@ -2,10 +2,12 @@ package com.swe401.getasset;
 
 import android.app.FragmentManager;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -82,10 +84,11 @@ public class fragment_classroom_reservation extends Fragment {
 
         // Inflate the layout for this fragment
        final View view = inflater.inflate(R.layout.activity_fragment_classroom_reservation, container, false);
-        info = (TextView) view.findViewById(R.id.Info);
-        book = (Button) view.findViewById(R.id.button_book);
-        assetDb = new DatabaseHelper(getActivity());
+       assetDb = new DatabaseHelper(getActivity());
 
+       //find view
+        info = view.findViewById(R.id.Info);
+        book = view.findViewById(R.id.button_book);
         final String[] selectedDate = new String[1];
         final String[] selectedTime = new String[1];
         final String[] selectedRoom = new String[1];
@@ -197,8 +200,8 @@ public class fragment_classroom_reservation extends Fragment {
                 String sd = selectedDate[0];
                 String sr = selectedRoom[0];
 
-                boolean checkStatus = assetDb.checkRoomStatus(sd,st,sr);
-                if (checkStatus == true){
+                Cursor checkStatus = assetDb.checkRoomStatus(sd,st,sr);
+                if (checkStatus.getString(3).equals("available")){
                     fragment_room_reservation_details nextFrag = new fragment_room_reservation_details();
                     Bundle args = new Bundle();
                     args.putString("Room",sr);
