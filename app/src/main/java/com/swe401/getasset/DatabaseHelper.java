@@ -6,6 +6,7 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.Cursor;
+import android.util.Log;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
@@ -159,6 +160,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
 
+
 //    public void closeDatabase(DatabaseHelper db) {
 //        if (db != null && db.isOpen()) {
 //            db.close();
@@ -242,6 +244,38 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     // Get Data Operation
+    public Cursor getUser(String name, String pw){
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        String queryString = "SELECT * FROM " + TABLE_USER + " WHERE " + USER_NAME + " = '" + name + "' AND " +
+                USER_PW + "= '"+ pw + "';";
+        Cursor cursor = db.rawQuery(queryString, null);
+        cursor.moveToFirst();
+        return cursor;
+    }
+
+    public boolean validateUser(String name, String pw){
+        boolean checklogin=false;
+        Cursor cursor = getUser(name,pw);
+        if (cursor.moveToFirst()) {
+            checklogin = true;
+
+        }else{
+            checklogin = false;
+        }
+        return checklogin;
+
+    }
+
+    public String getUserEmail (String name, String pw){
+        String email ="";
+        Cursor cursor = getUser(name, pw);
+        if (cursor.moveToFirst()) {
+            email = cursor.getString(3);
+        }
+        return email;
+    }
+
     public Cursor fetchItemData(String item) {
 
         SQLiteDatabase db = this.getReadableDatabase();
@@ -291,37 +325,34 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public int getRoomID (String name){
         int roomID=0;
         SQLiteDatabase db = this.getReadableDatabase();
-        String queryString = "SELECT " + CID + " FROM " + TABLE_CLASSROOMS + "WHERE " + ROOM_NAME + "= '" + name + "';";
+
+        String queryString = "SELECT  *  FROM " + TABLE_CLASSROOMS + " WHERE " + ROOM_NAME + "= '" + name + "';";
         Cursor cursor = db.rawQuery(queryString, null);
         if (cursor.moveToFirst()) {
-            roomID=cursor.getInt(1);
+            roomID=cursor.getInt(0);
 
         }
-
         cursor.close();
 
         db.close();
         return roomID;
     }
 
-    public boolean checkRoomStatus (String date, String time, String name){
+    public Cursor checkRoomStatus (String date, String time, String name){
         int roomID = getRoomID(name);
-        boolean status = true;
         SQLiteDatabase db = this.getReadableDatabase();
-        String queryString = "SELECT " + STATUS + " FROM " + TABLE_TIME + " WHERE " + ROOM_DATE + " = '" + date + "' AND "
-                + ROOM_TIME + "=" + time +  FK_TID_CID + " = " + roomID + ";";
+        String queryString = "SELECT * FROM " + TABLE_TIME + " WHERE " + ROOM_DATE + " = '" + date + "' AND "
+                + ROOM_TIME + " = '" + time + "' AND "  + FK_TID_CID + " = " + roomID + ";";
+
         Cursor cursor = db.rawQuery(queryString, null);
-        if (cursor.moveToFirst()) {
-            if (cursor.getString(1).equals("available")){
-                status=true;
-            }else{
-                status =false;
-            }
+        if (cursor!=null) {
+            cursor.moveToFirst();
+            cursor.getString(3);
         }
 
         db.close();
-        cursor.close();
-        return status;
+        //cursor.close();
+        return cursor;
     }
 
 

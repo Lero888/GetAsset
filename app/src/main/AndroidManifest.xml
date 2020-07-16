@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".fragment_room_reservation_details"></activity>
-        <activity android:name=".fragment_classroom_reservation" />
+        <activity android:name=".fragment_classroom_reservation"/>
         <activity
             android:name=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
