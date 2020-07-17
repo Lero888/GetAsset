@@ -31,6 +31,7 @@ public class fragment_item_reservation extends Fragment {
     private String mParam2;
 
     DatabaseHelper assetDb;
+    session_management session;
     Fragment fragment;
     private ImageButton buttonTable;
     private ImageButton buttonChair;
@@ -80,6 +81,8 @@ public class fragment_item_reservation extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         final View view  = inflater.inflate(R.layout.activity_fragment_item_reservation, container, false);
+        session = new session_management(getActivity().getApplicationContext());
+        session.checkLogin();
 
         // find view
         buttonTable = view.findViewById(R.id.button_table);

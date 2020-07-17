@@ -295,20 +295,40 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         else return true;
     }
 
+    public boolean insertRoomBorrow (String date, String time, String name,
+                                     String telNo, String usage, String username){
+        int timeID = getTimeID(date,time,name);
+        int userID = getUserID(username);
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValue = new ContentValues();
+
+        contentValue.put(ROOM_USAGE,usage);
+        contentValue.put(ROOM_TEL_NO,telNo);
+        contentValue.put(FK_CBID_TID,timeID);
+        contentValue.put(FK_CBID_UID,userID);
+
+        long res = db.insert(TABLE_ROOM_BORROW, null, contentValue);
+
+        updateRoomStatus(timeID);
+
+        if (res == -1) return false;
+        else return true;
+    }
+
     // Get Data Operation
-    public Cursor getUser(String name, String pw){
+    public Cursor getUser(String email, String pw){
 
         SQLiteDatabase db = this.getReadableDatabase();
-        String queryString = "SELECT * FROM " + TABLE_USER + " WHERE " + USER_NAME + " = '" + name + "' AND " +
+        String queryString = "SELECT * FROM " + TABLE_USER + " WHERE " + USER_EMAIL+ " = '" + email + "' AND " +
                 USER_PW + "= '"+ pw + "';";
         Cursor cursor = db.rawQuery(queryString, null);
         cursor.moveToFirst();
         return cursor;
     }
 
-    public boolean validateUser(String name, String pw){
+    public boolean validateUser(String email, String pw){
         boolean checklogin=false;
-        Cursor cursor = getUser(name,pw);
+        Cursor cursor = getUser(email,pw);
         if (cursor.moveToFirst()) {
             checklogin = true;
 
@@ -319,13 +339,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
 
-    public String getUserEmail (String name, String pw){
-        String email ="";
-        Cursor cursor = getUser(name, pw);
+    public String getUserName (String email, String pw){
+        String name ="";
+        Cursor cursor = getUser(email, pw);
         if (cursor.moveToFirst()) {
-            email = cursor.getString(3);
+            name = cursor.getString(1);
         }
-        return email;
+        return name;
+    }
+
+    public int getUserID (String name){
+        int userID=0;
+        SQLiteDatabase db = this.getReadableDatabase();
+        String queryString = "SELECT * FROM " + TABLE_USER + " WHERE " + USER_NAME+ " = '" + name + "';";
+        Cursor cursor = db.rawQuery(queryString, null);
+        if (cursor.moveToFirst()){
+            userID = cursor.getInt(0);
+        }
+        return userID;
     }
 
     public Cursor fetchItemData(String item) {
@@ -428,10 +459,30 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
 
         db.close();
-        //cursor.close();
         return cursor;
     }
 
+    public int getTimeID(String date, String time, String name){
+        int timeID=0;
+        int roomID= getRoomID(name);
+        SQLiteDatabase db = this.getReadableDatabase();
+        String queryString = "SELECT * FROM " + TABLE_TIME + " WHERE " + ROOM_DATE + " = '" + date + "' AND "
+                + ROOM_TIME + " = '" + time + "' AND "  + FK_TID_CID + " = " + roomID + ";";
+        Cursor cursor = db.rawQuery(queryString, null);
+        if (cursor.moveToFirst()) {
+            timeID=cursor.getInt(0);
+
+        }
+        cursor.close();
+        return timeID;
+    }
+
+    //update
+    public void updateRoomStatus(int timeID){
+        SQLiteDatabase db = this.getReadableDatabase();
+        String queryString = "UPDATE "+ TABLE_TIME + " SET " + STATUS + "= 'unavailable' "+ " WHERE " + TID + "=" + timeID +";";
+        db.execSQL(queryString);
+    }
 
 
 }
