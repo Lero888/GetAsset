@@ -268,7 +268,7 @@ public class fragment_item_reservation_details_two extends Fragment {
 
                         // Save into database
                         assetDb.insertItemBorrowData(dateSelected, Integer.parseInt(String.valueOf(itemQuantity.getText())),
-                                "Borrowed", String.valueOf(phoneNo.getText()), String.valueOf(itemUsage.getText()), finalItem1) ;
+                                "Borrowed", String.valueOf(phoneNo.getText()), String.valueOf(itemUsage.getText()), finalItem1, "LEE ROU") ;
 
                         // Go to reservation status
                         fragment = new fragment_status();
@@ -296,6 +296,7 @@ public class fragment_item_reservation_details_two extends Fragment {
                 FragmentManager fm = getFragmentManager();
                 FragmentTransaction ft = fm.beginTransaction();
                 ft.replace(R.id.fragment_container, fragment);
+                ft.addToBackStack("fragment_item_status");
                 ft.commit();
             }
         });

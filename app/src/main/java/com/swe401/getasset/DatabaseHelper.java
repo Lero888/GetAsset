@@ -8,6 +8,9 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.database.Cursor;
 import android.util.Log;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class DatabaseHelper extends SQLiteOpenHelper {
 
 
@@ -248,9 +251,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public boolean insertItemBorrowData(String date, int borrow_quantity, String status, String telNo,
-                                        String usage, String item) {
+                                        String usage, String item, String user) {
 
         int itemID = getItemID(item);
+        int userID = getUserID(user);
 
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValue = new ContentValues();
@@ -261,7 +265,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValue.put(TEL_NO, telNo);
         contentValue.put(BORROW_USAGE, usage);
         contentValue.put(FK_IBID_IID, itemID);
-        contentValue.put(FK_IBID_UID, 1);
+        contentValue.put(FK_IBID_UID, userID);
 
         long res = db.insert(TABLE_ITEM_BORROW, null, contentValue);
         db.close();
@@ -328,31 +332,27 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return email;
     }
 
-    public Cursor fetchItemData(String item) {
+    public int getUserID(String name) {
+
+        Integer userID;
+
+        Cursor cursor = fetchUserData(name);
+        userID = cursor.getInt(0);
+
+        return userID;
+    }
+
+    public Cursor fetchUserData(String name) {
 
         SQLiteDatabase db = this.getReadableDatabase();
-//        List <Object> list = new ArrayList<>();
-//        Cursor cursor = this.database.query(SQLiteHelper.TABLE_NAME_STUDENT, new String[]{SQLiteHelper._ID, SQLiteHelper.NAME, SQLiteHelper.AGE}, null, null, null, null, null);
-        String queryString = "SELECT * FROM " + TABLE_ITEM + " WHERE " + ITEM_NAME + " = '" + item + "';";
+        String queryString = "SELECT * FROM " + TABLE_USER + " WHERE " + USER_NAME + " = '" + name + "';";
         Cursor cursor = db.rawQuery(queryString, null);
-        if (cursor != null) {
 
-            cursor.moveToFirst();
-        }
+        if (cursor != null) cursor.moveToFirst();
 
         db.close();
 
         return cursor;
-    }
-
-
-    public int getItemID(String item) {
-
-        int itemID;
-        Cursor cursor = fetchItemData(item);
-
-        itemID = cursor.getInt(0);
-        return itemID;
     }
 
     public Cursor fetchDepartmentData(String department) {
@@ -376,8 +376,159 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         int departmentID;
         Cursor cursor = fetchDepartmentData(department);
 
-        departmentID = cursor.getInt(0);
+        int iID = cursor.getColumnIndex(DID);
+        departmentID = cursor.getInt(iID);
         return departmentID;
+    }
+
+    public Cursor fetchItemData(String item) {
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String queryString = "SELECT * FROM " + TABLE_ITEM + " WHERE " + ITEM_NAME + " = '" + item + "';";
+        Cursor cursor = db.rawQuery(queryString, null);
+        if (cursor != null) {
+
+            cursor.moveToFirst();
+        }
+
+        db.close();
+
+        return cursor;
+    }
+
+
+    public Cursor fetchItemData(Integer itemID) {
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String queryString = "SELECT * FROM " + TABLE_ITEM + " WHERE " + IID + " = " + itemID + ";";
+        Cursor cursor = db.rawQuery(queryString, null);
+        if (cursor != null) {
+
+            cursor.moveToFirst();
+        }
+
+        db.close();
+
+        return cursor;
+    }
+
+    public int getItemID(String item) {
+
+        int itemID;
+        Cursor cursor = fetchItemData(item);
+
+        int iItemID = cursor.getColumnIndex(IID);
+        itemID = cursor.getInt(iItemID);
+        return itemID;
+    }
+
+    public Cursor fetchItemBorrowData(String user) {
+
+        Integer userID = getUserID(user);
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String queryString = "SELECT * FROM " + TABLE_ITEM_BORROW + " WHERE " + FK_IBID_UID + " = " + userID + ";";
+        Cursor cursor = db.rawQuery(queryString, null);
+        if (cursor != null) {
+
+            cursor.moveToFirst();
+        }
+
+        db.close();
+
+        return cursor;
+
+    }
+
+    public Integer getCountItemBorrowData(String user) {
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = fetchItemBorrowData(user);
+        Integer count = 0;
+        count = cursor.getCount();
+
+        cursor.close();
+        db.close();
+
+        return count;
+
+    }
+
+
+    public class ItemBorrow {
+
+//        private String image;
+        private String name;
+        private Integer quantity;
+        private String status;
+        private String dateBorrow;
+
+        public ItemBorrow (String name, Integer quantity, String status, String dateBorrow){
+
+            this.name = name;
+            this.quantity = quantity;
+            this.status = status;
+            this.dateBorrow = dateBorrow;
+        }
+
+        public String getName() {
+            return this.name;
+        }
+
+        public Integer getQuantity() {
+
+            return this.quantity;
+        }
+
+        public String getStatus() {
+
+            return this.status;
+        }
+
+        public String getDate() {
+
+            return this.dateBorrow;
+        }
+    }
+
+    public List fetchItemList (String user) {
+
+        List<ItemBorrow> itemList = new ArrayList<ItemBorrow>();
+
+        // get all items borrowed by the user
+        Cursor cursor = fetchItemBorrowData(user);
+
+        // output it into a list
+        for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()){
+
+            // get item name
+            int iItem = cursor.getColumnIndex(FK_IBID_IID);
+
+            int itemID = cursor.getInt(iItem);
+            Cursor itemInfo = fetchItemData(itemID);
+
+            // get item name
+            int iName = itemInfo.getColumnIndex(ITEM_NAME);
+            String itemName = itemInfo.getString(iName);
+
+            // borrow details : date, quantity, status
+            int iDate = cursor.getColumnIndex(BORROW_DATE);
+            int iQuantity = cursor.getColumnIndex(BORROW_QUANTITY);
+            int iStatus = cursor.getColumnIndex(BORROW_STATUS);
+
+            String date = cursor.getString(iDate);
+            Integer quantity = cursor.getInt(iQuantity);
+            String status = cursor.getString(iStatus);
+
+            itemList.add(new ItemBorrow(itemName, quantity, status, date));
+
+        }
+
+//        itemList.add(new ItemBorrow("LEE ROU", 20, "BORROWED", "22/7/2020"));
+        return itemList;
     }
 
     public Cursor fetchItemQuantityData(String item, String date) {

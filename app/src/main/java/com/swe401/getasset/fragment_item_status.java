@@ -1,20 +1,28 @@
 package com.swe401.getasset;
 
+import android.content.ClipData;
+import android.database.Cursor;
 import android.os.Bundle;
-
 import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link fragment_item_status#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class fragment_item_status extends Fragment {
+public class fragment_item_status<yes> extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -25,7 +33,17 @@ public class fragment_item_status extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    ListView listItem;
+    DatabaseHelper assetDb;
+    private ListView listItem;
+    List <DatabaseHelper.ItemBorrow> itemList;
+
+    Integer count;
+    String[] itemDate;
+    String[] itemName;
+    Integer[] itemQuantity;
+    String[] itemStatus;
+
+
 
     public fragment_item_status() {
         // Required empty public constructor
@@ -56,6 +74,7 @@ public class fragment_item_status extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
     }
 
     @Override
@@ -63,9 +82,83 @@ public class fragment_item_status extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         final View view =  inflater.inflate(R.layout.fragment_item_status, container, false);
+        listItem = view.findViewById(R.id.listView);
 
-//        listItem = view.findViewById(R.id.listView);
+        assetDb = new DatabaseHelper(getActivity());
+
+        CustomAdapter customAdapter = new CustomAdapter();
+        listItem.setAdapter(customAdapter);
 
         return view;
+    }
+
+    class CustomAdapter extends BaseAdapter {
+
+        @Override
+        public int getCount() {
+            return assetDb.getCountItemBorrowData("LEE ROU");
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return null;
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return 0;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            View view = getLayoutInflater().inflate(R.layout.custom_layout_list, null);
+
+//            ImageView imgItem = (ImageView) view.findViewById(R.id.image_item);
+            TextView itemStatusDate = (TextView) view.findViewById(R.id.itemStatusDate);
+            TextView itemStatusName = (TextView) view.findViewById(R.id.itemStatusName);
+            TextView itemStatusQuantity = (TextView) view.findViewById(R.id.itemStatusQuantity);
+            TextView itemStatusStatus = (TextView) view.findViewById(R.id.itemStatusStatus);
+
+            count = assetDb.getCountItemBorrowData("LEE ROU");
+
+            String[] itemImage = new String[count];
+            String[] itemDate = new String[count];
+            String[] itemName = new String[count];
+            Integer[] itemQuantity = new Integer[count];
+            String[] itemStatus = new String[count];
+
+
+            if (count > 0) {
+
+                int i = 0;
+
+                itemList = assetDb.fetchItemList("LEE ROU");
+
+                for (DatabaseHelper.ItemBorrow item: itemList) {
+
+
+//                    itemImage[i] = item.getImage();
+                    itemDate[i] = item.getDate();
+                    itemName[i] = item.getName();
+                    itemQuantity[i] = item.getQuantity();
+                    itemStatus[i] = item.getStatus();
+                    i += 1;
+
+                }
+
+
+            }
+
+            if (count > 0) {
+                itemStatusDate.setText(itemDate[position]);
+                itemStatusName.setText(itemName[position]);
+                itemStatusQuantity.setText(String.valueOf(itemQuantity[position]));
+                itemStatusStatus.setText(itemStatus[position]);
+
+            }
+
+
+            return view;
+        }
     }
 }
