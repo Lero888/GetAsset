@@ -9,6 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
+
+import java.util.HashMap;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -25,6 +28,10 @@ public class fragment_room_reservation_details extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    DatabaseHelper assetDb;
+    session_management session;
+
 
     public fragment_room_reservation_details() {
         // Required empty public constructor
@@ -62,14 +69,22 @@ public class fragment_room_reservation_details extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         final View view = inflater.inflate(R.layout.activity_fragment_room_reservation_details, container, false);
+        session = new session_management(getActivity().getApplicationContext());
+        session.checkLogin();
+        assetDb = new DatabaseHelper(getActivity());
+        HashMap<String, String> user = session.getUserDetails();
+
+        final String username = user.get(session_management.KEY_NAME);
         EditText room_no = (EditText)view.findViewById(R.id.editTextNo);
         EditText room_date = (EditText)view.findViewById(R.id.editTextDate);
         EditText room_time = (EditText)view.findViewById(R.id.editTextTime);
+        final EditText room_phoneNo = view.findViewById(R.id.editTextPhone);
+        final EditText room_usage = view.findViewById(R.id.editTextRoomUsage);
         Button button_cancel = (Button)view.findViewById(R.id.button_cancel);
         Button button_save = (Button)view.findViewById(R.id.button_save);
-        String rNo = getArguments().getString("Room");
-        String rDate = getArguments().getString("Date");
-        String rTime = getArguments().getString("Time");
+        final String rNo = getArguments().getString("Room");
+        final String rDate = getArguments().getString("Date");
+        final String rTime = getArguments().getString("Time");
         room_no.setText(rNo);
         room_date.setText(rDate);
         room_time.setText(rTime);
@@ -77,11 +92,27 @@ public class fragment_room_reservation_details extends Fragment {
         button_save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                fragment_status nextFrag = new fragment_status();
-                getActivity().getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragment_container, nextFrag)
-                        .addToBackStack(null)
-                        .commit();
+                String telNo = room_phoneNo.getText().toString();
+                String roomUsage = room_usage.getText().toString();
+                if (telNo.length()==0 || roomUsage.length()==0){
+                    if (telNo.length()==0){
+                        room_phoneNo.requestFocus();
+                        room_phoneNo.setError("Phone number is required");
+                    }else if (roomUsage.length()==0){
+                        room_usage.requestFocus();
+                        room_usage.setError("Usage is required");
+                    }
+
+                }else{
+                    assetDb.insertRoomBorrow(rDate,rTime,rNo,telNo,roomUsage,username);
+                    Toast.makeText(getContext(),"Book Successful", Toast.LENGTH_SHORT).show();
+                    fragment_status nextFrag = new fragment_status();
+                    getActivity().getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.fragment_container, nextFrag)
+                            .addToBackStack(null)
+                            .commit();
+                }
+
             }
 
 

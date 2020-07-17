@@ -28,6 +28,7 @@ public class fragment_status extends Fragment {
     private String mParam2;
 
     Fragment fragment;
+    session_management session;
     private Button buttonItem;
     private Button buttonClassroom;
 
@@ -68,6 +69,8 @@ public class fragment_status extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         final View view = inflater.inflate(R.layout.activity_fragment_status, container, false);
+        session = new session_management(getActivity().getApplicationContext());
+        session.checkLogin();
 
         buttonItem = view.findViewById(R.id.status_item);
         buttonClassroom = view.findViewById(R.id.status_classroom);
@@ -83,7 +86,16 @@ public class fragment_status extends Fragment {
             }
         });
 
-
+        buttonClassroom.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                fragment = new fragment_room_status();
+                FragmentManager fm = getFragmentManager();
+                FragmentTransaction ft = fm.beginTransaction();
+                ft.replace(R.id.fragment_container, fragment);
+                ft.commit();
+            }
+        });
         return view;
     }
 }

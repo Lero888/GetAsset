@@ -3,9 +3,7 @@ package com.swe401.getasset;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,7 +16,7 @@ public class login extends AppCompatActivity {
     DatabaseHelper assetDb;
     session_management session;
 
-    private EditText Username;
+    private EditText Email;
     private EditText Password;
     private TextView Info;
     private Button Login;
@@ -37,7 +35,7 @@ public class login extends AppCompatActivity {
         loadData();
 
         // find view
-        Username = findViewById(R.id.login_username);
+        Email = findViewById(R.id.login_email);
         Password = findViewById(R.id.login_password);
         Info = findViewById(R.id.Info);
         Login = findViewById(R.id.login_button);
@@ -46,12 +44,12 @@ public class login extends AppCompatActivity {
         Login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String un = Username.getText().toString();
+                String email = Email.getText().toString();
                 String pw = Password.getText().toString();
-                boolean validateUser = assetDb.validateUser(un,pw);
-                if (un.length()==0){
-                    Username.requestFocus();
-                    Username.setError("FIELD CANNOT BE EMPTY");
+                boolean validateUser = assetDb.validateUser(email,pw);
+                if (email.length()==0){
+                    Email.requestFocus();
+                    Email.setError("FIELD CANNOT BE EMPTY");
                 }
                 else if(pw.length()==0){
                     Password.requestFocus();
@@ -59,13 +57,13 @@ public class login extends AppCompatActivity {
                 }
                 else if(validateUser) {
                // else if ((un.equals("test")) && (pw.equals("1234"))) {
-                    String email = assetDb.getUserEmail(un,pw);
+                    String un = assetDb.getUserName(email,pw);
                     session.createLoginSession(un, email);
                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                     startActivity(intent);
 
                 }else if (! validateUser){
-                    Info.setText("Username or password invalid. Please try again.");
+                    Info.setText("Email or password invalid. Please try again.");
                     Info.setVisibility(View.VISIBLE);
                 }
             }

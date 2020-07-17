@@ -36,7 +36,7 @@ public class fragment_classroom_reservation extends Fragment {
     private String mParam1;
     private String mParam2;
     DatabaseHelper assetDb;
-
+    session_management session;
     private TextView info;
     private Button book;
 
@@ -84,10 +84,12 @@ public class fragment_classroom_reservation extends Fragment {
 
         // Inflate the layout for this fragment
        final View view = inflater.inflate(R.layout.activity_fragment_classroom_reservation, container, false);
+       session = new session_management(getActivity().getApplicationContext());
+       session.checkLogin();
        assetDb = new DatabaseHelper(getActivity());
 
        //find view
-        info = view.findViewById(R.id.Info);
+        info = view.findViewById(R.id.book_info);
         book = view.findViewById(R.id.button_book);
         final String[] selectedDate = new String[1];
         final String[] selectedTime = new String[1];
