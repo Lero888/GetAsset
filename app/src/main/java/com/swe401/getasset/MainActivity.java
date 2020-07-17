@@ -6,12 +6,19 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.material.navigation.NavigationView;
+
+import org.w3c.dom.Text;
+
+import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -26,6 +33,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_main);
         assetDb = new DatabaseHelper(this);
         session = new session_management(getApplicationContext());
+        HashMap<String, String> user = session.getUserDetails();
+        final String username = user.get(session_management.KEY_NAME);
+        final String email = user.get(session_management.KEY_EMAIL);
         // nav
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -36,8 +46,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
+
+
         // detect selection of the user
         navView = findViewById(R.id.nav_view);
+        View headerView = navView.getHeaderView(0);
+        TextView navUsername = (TextView) headerView.findViewById(R.id.Username);
+        navUsername.setText(username);
+        TextView navEmail = headerView.findViewById(R.id.Email);
+        navEmail.setText(email);
+
         navView.setNavigationItemSelectedListener(this);
 
         if (savedInstanceState == null) {
