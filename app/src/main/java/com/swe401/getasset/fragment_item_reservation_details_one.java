@@ -121,9 +121,15 @@ public class fragment_item_reservation_details_one extends Fragment {
             Log.v("Error", "No value is found");
             // Show message
         } else {
-            itemName.setText(res.getString(1));
-            departmentName.setText(res.getString(2));
-            description.setText(res.getString(4));
+            int iName = res.getColumnIndex("itemName");
+            int iDesc = res.getColumnIndex("itemDesc");
+            int idepartmentID = res.getColumnIndex("departmentID");
+            int departmentID = res.getInt(idepartmentID);
+            String dName = assetDb.getDepartmentName(departmentID);
+
+            itemName.setText(res.getString(iName));
+            departmentName.setText(dName);
+            description.setText(res.getString(iDesc));
         }
 
         calendarView.setMinDate(System.currentTimeMillis() - 1000);
@@ -142,7 +148,8 @@ public class fragment_item_reservation_details_one extends Fragment {
 
                     // Show message
                 } else {
-                    itemQuantity.setText(String.valueOf(res.getInt(1)));
+                    int iQuantity = res.getColumnIndex("quantityLeft");
+                    itemQuantity.setText(String.valueOf(res.getInt(iQuantity)));
                 }
 
             }

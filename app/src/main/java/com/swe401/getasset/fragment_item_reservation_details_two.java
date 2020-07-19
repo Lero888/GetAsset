@@ -23,6 +23,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.HashMap;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link fragment_item_reservation_details_two#newInstance} factory method to
@@ -88,6 +90,10 @@ public class fragment_item_reservation_details_two extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+        assetDb = new DatabaseHelper(getActivity());
+        session = new session_management(getActivity().getApplicationContext());
+        session.checkLogin();
     }
 
     @Override
@@ -95,8 +101,6 @@ public class fragment_item_reservation_details_two extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         final View view = inflater.inflate(R.layout.fragment_item_reservation_details_two, container, false);
-        assetDb = new DatabaseHelper(getActivity());
-        session = new session_management(getActivity().getApplicationContext());
 
         // find View
         img = view.findViewById(R.id.image_item);
@@ -143,9 +147,15 @@ public class fragment_item_reservation_details_two extends Fragment {
 
             Log.v("Error", "No value is found");
         } else {
-            itemName.setText(res.getString(1));
-            departmentName.setText(res.getString(2));
-            description.setText(res.getString(4));
+            int iName = res.getColumnIndex("itemName");
+            int iDesc = res.getColumnIndex("itemDesc");
+            int idepartmentID = res.getColumnIndex("departmentID");
+            int departmentID = res.getInt(idepartmentID);
+            String dName = assetDb.getDepartmentName(departmentID);
+
+            itemName.setText(res.getString(iName));
+            departmentName.setText(dName);
+            description.setText(res.getString(iDesc));
         }
 
         // Date
@@ -226,9 +236,8 @@ public class fragment_item_reservation_details_two extends Fragment {
 
             @Override
             public void onClick(View view) {
-//                Toast.makeText(fragment_item_reservation_details_two.this,
-//                        getResources().getString(R.string.item_reserve_successful),
-//                        Toast.LENGTH_SHORT).show();
+                HashMap<String, String> user = session.getUserDetails();
+                String username = user.get(session_management.KEY_NAME);
 
 
                 // Validate if empty
@@ -268,7 +277,7 @@ public class fragment_item_reservation_details_two extends Fragment {
 
                         // Save into database
                         assetDb.insertItemBorrowData(dateSelected, Integer.parseInt(String.valueOf(itemQuantity.getText())),
-                                "Borrowed", String.valueOf(phoneNo.getText()), String.valueOf(itemUsage.getText()), finalItem1, "LEE ROU") ;
+                                "Borrowed", String.valueOf(phoneNo.getText()), String.valueOf(itemUsage.getText()), finalItem1, username) ;
 
                         // Go to reservation status
                         fragment = new fragment_status();

@@ -1,20 +1,27 @@
 package com.swe401.getasset;
 
+import android.app.Dialog;
 import android.content.ClipData;
 import android.database.Cursor;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -34,15 +41,19 @@ public class fragment_item_status<yes> extends Fragment {
     private String mParam2;
 
     DatabaseHelper assetDb;
+    session_management session;
+
     private ListView listItem;
     List <DatabaseHelper.ItemBorrow> itemList;
-
+    Button buttonPopup;
+    ImageButton close;
+    Dialog myDialog;
+    EditText numberPassword;
+    Button buttonSubmitPassword;
+    TextView errorPassword;
+    String item;
+    String date;
     Integer count;
-    String[] itemDate;
-    String[] itemName;
-    Integer[] itemQuantity;
-    String[] itemStatus;
-
 
 
     public fragment_item_status() {
@@ -75,6 +86,10 @@ public class fragment_item_status<yes> extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
+        session = new session_management(getActivity().getApplicationContext());
+        session.checkLogin();
+        myDialog = new Dialog(getContext());
+
     }
 
     @Override
@@ -82,21 +97,109 @@ public class fragment_item_status<yes> extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         final View view =  inflater.inflate(R.layout.fragment_item_status, container, false);
-        listItem = view.findViewById(R.id.listView);
-
         assetDb = new DatabaseHelper(getActivity());
+        HashMap<String, String> user = session.getUserDetails();
+        final String username = user.get(session_management.KEY_NAME);
 
-        CustomAdapter customAdapter = new CustomAdapter();
+        listItem = view.findViewById(R.id.listView);
+        final CustomAdapter customAdapter = new CustomAdapter();
+        customAdapter.notifyDataSetChanged();
         listItem.setAdapter(customAdapter);
 
+        // pop up
+        myDialog.setContentView(R.layout.custom_popup);
+        numberPassword = myDialog.findViewById(R.id.editTextNumberPassword);
+        buttonSubmitPassword = myDialog.findViewById(R.id.submitPassword);
+        errorPassword = myDialog.findViewById(R.id.error_pw);
+
+        // when a specific item is clicked
+        listItem.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                TextView status  = view.findViewById(R.id.itemStatusStatus);
+                String statusItem = status.getText().toString();
+
+                if (statusItem.equals("Borrowed") || statusItem.equals("Retrieved")) {
+
+
+                    errorPassword.setVisibility(View.INVISIBLE);
+                    numberPassword.getText().clear();
+                    TextView viewItemName = view.findViewById(R.id.itemStatusName);
+                    TextView dateBorrow = view.findViewById(R.id.itemStatusDate);
+
+                    item = viewItemName.getText().toString();
+                    date = dateBorrow.getText().toString();
+                    showPopUp(item, statusItem);
+
+
+                }
+
+
+            }
+        });
+
+        buttonSubmitPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                String pw = numberPassword.getText().toString();
+                boolean checkPassword = assetDb.validatePassword(pw, item);
+
+                if (checkPassword) {
+
+                    assetDb.updateItemBorrowStatus(username, date, item);
+                    myDialog.dismiss();
+
+                } else {
+
+                    errorPassword.setVisibility(View.VISIBLE);
+                    if (pw.length()==0){
+                        errorPassword.setText("FIELD CANNOT BE EMPTY");
+                    } else {
+                        errorPassword.setText("WRONG PASSWORD");
+                    }
+                }
+            }
+
+        });
+
+
         return view;
+    }
+
+    // Pop up for retrieving/returning items
+    public void showPopUp(String item, String status) {
+
+        close = myDialog.findViewById(R.id.closePopup);
+
+        close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                myDialog.dismiss();
+            }
+
+        });
+
+        myDialog.show();
+
+        TextView instruction = myDialog.findViewById(R.id.popUpInstruction);
+
+        if (status.equals("Borrowed")) {
+            instruction.setText("You are retrieving the items. Please request the staff to input the password.");
+        } else if (status.equals("Retrieved")) {
+            instruction.setText("You are returning the items. Please request the staff to input the password.");
+        }
     }
 
     class CustomAdapter extends BaseAdapter {
 
         @Override
         public int getCount() {
-            return assetDb.getCountItemBorrowData("LEE ROU");
+
+            HashMap<String, String> user = session.getUserDetails();
+            String username = user.get(session_management.KEY_NAME);
+            return assetDb.getCountItemBorrowData(username);
         }
 
         @Override
@@ -113,13 +216,25 @@ public class fragment_item_status<yes> extends Fragment {
         public View getView(int position, View convertView, ViewGroup parent) {
             View view = getLayoutInflater().inflate(R.layout.custom_layout_list, null);
 
+            HashMap<String, String> user = session.getUserDetails();
+            String username = user.get(session_management.KEY_NAME);
+
 //            ImageView imgItem = (ImageView) view.findViewById(R.id.image_item);
             TextView itemStatusDate = (TextView) view.findViewById(R.id.itemStatusDate);
             TextView itemStatusName = (TextView) view.findViewById(R.id.itemStatusName);
             TextView itemStatusQuantity = (TextView) view.findViewById(R.id.itemStatusQuantity);
             TextView itemStatusStatus = (TextView) view.findViewById(R.id.itemStatusStatus);
+//            buttonPopup = view.findViewById(R.id.buttonPassword);
 
-            count = assetDb.getCountItemBorrowData("LEE ROU");
+    //            buttonPopup.setOnClickListener(new View.OnClickListener() {
+    //                @Override
+    //                public void onClick(View view) {
+    //
+    //                    showPopUp(view);
+    //                }
+    //            });
+
+            count = assetDb.getCountItemBorrowData(username);
 
             String[] itemImage = new String[count];
             String[] itemDate = new String[count];
@@ -132,10 +247,9 @@ public class fragment_item_status<yes> extends Fragment {
 
                 int i = 0;
 
-                itemList = assetDb.fetchItemList("LEE ROU");
+                itemList = assetDb.fetchItemList(username);
 
                 for (DatabaseHelper.ItemBorrow item: itemList) {
-
 
 //                    itemImage[i] = item.getImage();
                     itemDate[i] = item.getDate();

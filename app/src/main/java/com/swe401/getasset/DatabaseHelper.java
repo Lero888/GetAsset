@@ -8,8 +8,13 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.database.Cursor;
 import android.util.Log;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
@@ -250,6 +255,23 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
 
+    public void updateItemQuantityData(String date, Integer quantity, String item) {
+
+        int itemID = getItemID(item);
+        Cursor cursor = fetchItemQuantityData(item, date);
+        int iQuantity = cursor.getColumnIndex(QUANTITY_LEFT);
+        Integer currentQuantity = cursor.getInt(iQuantity);
+
+        Integer updateQuantity = currentQuantity - quantity;
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        db.execSQL("UPDATE " + TABLE_ITEM_QUANTITY + " SET " + QUANTITY_LEFT + " = " + updateQuantity + " WHERE " +
+                    FK_IQID_IID + " = " + itemID + " AND " + QUANTITY_DATE + " = '" + date + "';");
+        db.close();
+
+    }
+
     public boolean insertItemBorrowData(String date, int borrow_quantity, String status, String telNo,
                                         String usage, String item, String user) {
 
@@ -269,6 +291,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         long res = db.insert(TABLE_ITEM_BORROW, null, contentValue);
         db.close();
+
+        updateItemQuantityData(date, borrow_quantity, item);
 
         if (res == -1) return false;
         else return true;
@@ -363,16 +387,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return userID;
     }
 
-    public int getUserID(String name) {
-
-        Integer userID;
-
-        Cursor cursor = fetchUserData(name);
-        userID = cursor.getInt(0);
-
-        return userID;
-    }
-
     public Cursor fetchUserData(String name) {
 
         SQLiteDatabase db = this.getReadableDatabase();
@@ -401,6 +415,21 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return cursor;
     }
 
+    public Cursor fetchDepartmentData(Integer departmentID) {
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        String queryString = "SELECT * FROM " + TABLE_DEPARTMENT + " WHERE " + DID + " = " + departmentID + ";";
+        Cursor cursor = db.rawQuery(queryString, null);
+        if (cursor != null) {
+
+            cursor.moveToFirst();
+        }
+
+        db.close();
+
+        return cursor;
+    }
+
 
     public int getDepartmentID(String department) {
 
@@ -410,6 +439,41 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         int iID = cursor.getColumnIndex(DID);
         departmentID = cursor.getInt(iID);
         return departmentID;
+    }
+
+    public String getDepartmentName(Integer departmentID) {
+
+        Cursor cursor = fetchDepartmentData(departmentID);
+        int iName = cursor.getColumnIndex(DEPARTMENT_NAME);
+        String departmentName = cursor.getString(iName);
+        cursor.close();
+
+        return departmentName;
+
+    }
+
+    public String getDepartmentPassword(String item) {
+
+        Cursor cursor = fetchItemData(item);
+        int index_departmentID = cursor.getColumnIndex(FK_IID_DID);
+        Integer departmentID = cursor.getInt(index_departmentID);
+        cursor.close();
+
+        cursor = fetchDepartmentData(departmentID);
+        int iPassword = cursor.getColumnIndex(DEPARTMENT_PASSWORD);
+        String password = cursor.getString(iPassword);
+
+        return password;
+
+    }
+
+    public boolean validatePassword(String pw, String item) {
+
+        String departmentPw = getDepartmentPassword(item);
+
+        if (pw.equals(departmentPw)) return true;
+
+        return false;
     }
 
     public Cursor fetchItemData(String item) {
@@ -453,6 +517,42 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         int iItemID = cursor.getColumnIndex(IID);
         itemID = cursor.getInt(iItemID);
         return itemID;
+    }
+
+    public void updateItemBorrowStatus(String user, String date, String item) {
+
+        Integer userID = getUserID(user);
+        Integer itemID = getItemID(item);
+        String status = getItemBorrowStatus(userID, date, itemID);
+        String newStatus = "";
+        if (status.equals("Borrowed")) newStatus = "Retrieved";
+        if (status.equals("Retrieved")) newStatus = "Returned";
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("UPDATE " + TABLE_ITEM_BORROW + " SET " + BORROW_STATUS + " = '" + newStatus + "' WHERE " +
+                FK_IBID_UID + " = " + userID + " AND " + FK_IBID_IID + " = " + itemID + " AND " + BORROW_DATE + " = '" + date + "';");
+        db.close();
+
+    }
+
+    public String getItemBorrowStatus(Integer userID, String date, Integer itemID) {
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String queryString = "SELECT * FROM " + TABLE_ITEM_BORROW + " WHERE " + FK_IBID_UID + " = " + userID + " AND " +
+                FK_IBID_IID + " = " + itemID + " AND " + BORROW_DATE + " = '" + date + "';";
+        Cursor cursor = db.rawQuery(queryString, null);
+        if (cursor != null) {
+            cursor.moveToFirst();
+        }
+
+        db.close();
+
+        int iStatus = cursor.getColumnIndex(BORROW_STATUS);
+        String status = cursor.getString(iStatus);
+
+        return status;
+
     }
 
     public Cursor fetchItemBorrowData(String user) {
@@ -523,6 +623,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
             return this.dateBorrow;
         }
+
+        public Date getDateFormat() throws ParseException {
+
+            String dateFormat = this.dateBorrow;
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            String formatted = sdf.format(dateFormat);
+            Date date = sdf.parse(formatted);
+//            Date date = sdf.parse(dateFormat);
+
+            return date;
+
+        }
     }
 
     public List fetchItemList (String user) {
@@ -558,7 +670,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         }
 
-//        itemList.add(new ItemBorrow("LEE ROU", 20, "BORROWED", "22/7/2020"));
+//        Collections.sort(itemList, (o1, o2) -> o1.getDateFormat() - o2.getDateFormat();
         return itemList;
     }
 

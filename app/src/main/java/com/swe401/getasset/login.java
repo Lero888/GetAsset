@@ -87,9 +87,10 @@ public class login extends AppCompatActivity {
         //UserData
         assetDb.insertUserData("LEE ROU", "hello", "swe1704655@xmu.edu.my");
         assetDb.insertUserData("LIM CAROL", "hello", "swe1704205@xmu.edu.my");
+        assetDb.insertUserData("a", "a", "a");
 
         //DepartmentData
-        assetDb.insertDepartmentData("Asset", "704204");
+        assetDb.insertDepartmentData("Asset", "704205");
         assetDb.insertDepartmentData("IT", "704655");
 
         //ItemData
@@ -101,37 +102,37 @@ public class login extends AppCompatActivity {
 
         //ItemQuantity by Date
         //20/7/2020
-        assetDb.insertItemQuantityData(100, "20/7/2020", 1);
-        assetDb.insertItemQuantityData(200, "20/7/2020", 2);
-        assetDb.insertItemQuantityData(5, "20/7/2020", 3);
-        assetDb.insertItemQuantityData(2, "20/7/2020", 4);
+        assetDb.insertItemQuantityData(100, "20/07/2020", 1);
+        assetDb.insertItemQuantityData(200, "20/07/2020", 2);
+        assetDb.insertItemQuantityData(5, "20/07/2020", 3);
+        assetDb.insertItemQuantityData(2, "20/07/2020", 4);
 
         //21/7/2020
-        assetDb.insertItemQuantityData(100, "21/7/2020", 1);
-        assetDb.insertItemQuantityData(200, "21/7/2020", 2);
-        assetDb.insertItemQuantityData(5, "21/7/2020", 3);
-        assetDb.insertItemQuantityData(2, "21/7/2020", 4);
+        assetDb.insertItemQuantityData(100, "21/07/2020", 1);
+        assetDb.insertItemQuantityData(200, "21/07/2020", 2);
+        assetDb.insertItemQuantityData(5, "21/07/2020", 3);
+        assetDb.insertItemQuantityData(2, "21/07/2020", 4);
 
         //22/7/2020
-        assetDb.insertItemQuantityData(100, "22/7/2020", 1);
-        assetDb.insertItemQuantityData(200, "22/7/2020", 2);
-        assetDb.insertItemQuantityData(5, "22/7/2020", 3);
-        assetDb.insertItemQuantityData(2, "22/7/2020", 4);
+        assetDb.insertItemQuantityData(100, "22/07/2020", 1);
+        assetDb.insertItemQuantityData(200, "22/07/2020", 2);
+        assetDb.insertItemQuantityData(5, "22/07/2020", 3);
+        assetDb.insertItemQuantityData(2, "22/07/2020", 4);
 
         //23/7/2020
-        assetDb.insertItemQuantityData(100, "23/7/2020", 1);
-        assetDb.insertItemQuantityData(200, "23/7/2020", 2);
-        assetDb.insertItemQuantityData(5, "23/7/2020", 3);
-        assetDb.insertItemQuantityData(2, "23/7/2020", 4);
+        assetDb.insertItemQuantityData(100, "23/07/2020", 1);
+        assetDb.insertItemQuantityData(200, "23/07/2020", 2);
+        assetDb.insertItemQuantityData(5, "23/07/2020", 3);
+        assetDb.insertItemQuantityData(2, "23/07/2020", 4);
 
         //24/7/2020
-        assetDb.insertItemQuantityData(100, "24/7/2020", 1);
-        assetDb.insertItemQuantityData(200, "24/7/2020", 2);
-        assetDb.insertItemQuantityData(5, "24/7/2020", 3);
-        assetDb.insertItemQuantityData(2, "24/7/2020", 4);
+        assetDb.insertItemQuantityData(100, "24/07/2020", 1);
+        assetDb.insertItemQuantityData(200, "24/07/2020", 2);
+        assetDb.insertItemQuantityData(5, "24/07/2020", 3);
+        assetDb.insertItemQuantityData(2, "24/07/2020", 4);
 
         //ItemBorrowData
-        assetDb.insertItemBorrowData("20/7/2020", 100, "Borrowed", "60115673849", "Teachers Day Festival", "Chair", "LEE ROU");
+        assetDb.insertItemBorrowData("20/07/2020", 100, "Borrowed", "60115673849", "Teachers Day Festival", "Chair", "a");
 
         //ClassroomData
         assetDb.insertClassroomData("B1 101B");
