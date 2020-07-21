@@ -6,6 +6,7 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.Cursor;
+import android.net.wifi.WifiManager;
 import android.util.Log;
 
 import java.text.ParseException;
@@ -699,11 +700,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         String queryString = "SELECT  *  FROM " + TABLE_CLASSROOMS + " WHERE " + ROOM_NAME + "= '" + name + "';";
         Cursor cursor = db.rawQuery(queryString, null);
-        if (cursor.moveToFirst()) {
+        if (cursor!=null) {
+            cursor.moveToFirst();
             roomID=cursor.getInt(0);
 
         }
-        cursor.close();
+
 
         db.close();
         return roomID;
@@ -718,7 +720,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery(queryString, null);
         if (cursor!=null) {
             cursor.moveToFirst();
-            cursor.getString(3);
+            cursor.getColumnIndex(STATUS);
         }
 
         db.close();
@@ -740,6 +742,38 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return timeID;
     }
 
+    public Cursor fetchTimeData (int timeID){
+        SQLiteDatabase db = this.getReadableDatabase();
+        String queryString = "SELECT * FROM " + TABLE_TIME + " WHERE " + TID+ " = " + timeID + ";";
+
+        Cursor cursor = db.rawQuery(queryString, null);
+        if (cursor != null) {
+
+            cursor.moveToFirst();
+
+
+        }
+
+        db.close();
+
+        return cursor;
+
+    }
+
+    public String getRoomName (int cid){
+        SQLiteDatabase db = this.getReadableDatabase();
+        String queryString = "SELECT  *  FROM " + TABLE_CLASSROOMS + " WHERE " + CID + "= " + cid + ";";
+        Cursor cursor = db.rawQuery(queryString, null);
+        if (cursor !=null) {
+            cursor.moveToFirst();
+        }
+
+        db.close();
+        int rName = cursor.getColumnIndex(ROOM_NAME);
+        String roomName= cursor.getString(rName);
+        return roomName;
+    }
+
     //update
     public void updateRoomStatus(int timeID){
         SQLiteDatabase db = this.getReadableDatabase();
@@ -747,6 +781,103 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(queryString);
     }
 
+    public Cursor fetchRoomBorrowData(String user) {
+
+        Integer userID = getUserID(user);
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String queryString = "SELECT * FROM " + TABLE_ROOM_BORROW + " WHERE " + FK_CBID_UID + " = " + userID + ";";
+        Cursor cursor = db.rawQuery(queryString, null);
+        if (cursor != null) {
+
+            cursor.moveToFirst();
+        }
+
+        db.close();
+
+        return cursor;
+
+    }
+
+    public Integer getCountRoomBorrowData(String user) {
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = fetchRoomBorrowData(user);
+        Integer count = 0;
+        count = cursor.getCount();
+
+        cursor.close();
+        db.close();
+
+        return count;
+
+    }
+
+    public class RoomBorrow {
+
+        //        private String image;
+        private String roomNo;
+        private String roomDate;
+        private String roomTime;
+
+        public RoomBorrow (String roomNo,String roomDate, String roomTime){
+
+            this.roomNo = roomNo;
+            this.roomDate = roomDate;
+            this.roomTime = roomTime;
+        }
+
+        public String getRoomNo() {
+            return this.roomNo;
+        }
+
+        public String getRoomDate() {
+
+            return this.roomDate;
+        }
+
+        public String getRoomTime() {
+
+            return this.roomTime;
+        }
+
+    }
+
+    public List fetchRoomList (String user) {
+
+        List<RoomBorrow> roomList = new ArrayList<RoomBorrow>();
+
+        // get all items borrowed by the user
+        Cursor cursor = fetchRoomBorrowData(user);
+
+        // output it into a list
+        for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()){
+
+            // get time id
+            int tID = cursor.getColumnIndex(FK_CBID_TID);
+
+            int timeID = cursor.getInt(tID);
+            Cursor roomInfo = fetchTimeData(timeID);
+
+            // get room name
+            int cid = roomInfo.getColumnIndex(FK_TID_CID);
+            int room_id = Integer.parseInt(roomInfo.getString(cid));
+            String roomName = getRoomName(room_id);
+
+            // room details : date, time
+            int rDate = roomInfo.getColumnIndex(ROOM_DATE);
+            int rTime = roomInfo.getColumnIndex(ROOM_TIME);
+
+            String date = roomInfo.getString(rDate);
+            String time = roomInfo.getString(rTime);
+            roomList.add(new RoomBorrow(roomName, date,time));
+
+        }
+
+//        Collections.sort(itemList, (o1, o2) -> o1.getDateFormat() - o2.getDateFormat();
+        return roomList;
+    }
 
 }
 

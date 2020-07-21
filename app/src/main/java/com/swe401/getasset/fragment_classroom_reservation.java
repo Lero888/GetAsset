@@ -20,6 +20,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.database.Cursor;
 
+import static com.swe401.getasset.DatabaseHelper.STATUS;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link fragment_item_reservation#newInstance} factory method to
@@ -201,9 +203,10 @@ public class fragment_classroom_reservation extends Fragment {
                 String st = selectedTime[0];
                 String sd = selectedDate[0];
                 String sr = selectedRoom[0];
-
                 Cursor checkStatus = assetDb.checkRoomStatus(sd,st,sr);
-                if (checkStatus.getString(3).equals("available")){
+                int status = checkStatus.getColumnIndex(STATUS);
+                String stat = checkStatus.getString(status);
+                if (stat.equals("available")){
                     fragment_room_reservation_details nextFrag = new fragment_room_reservation_details();
                     Bundle args = new Bundle();
                     args.putString("Room",sr);
