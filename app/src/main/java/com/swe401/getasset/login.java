@@ -63,13 +63,20 @@ public class login extends AppCompatActivity {
                     startActivity(intent);
 
                 }else if (! validateUser){
-                    Info.setText("Email or password invalid. Please try again.");
+                    Info.setText(R.string.invalid_login);
                     Info.setVisibility(View.VISIBLE);
                 }
             }
         });
 
 
+    }
+
+    public void onResume() {
+
+        super.onResume();
+        Email.getText().clear();
+        Password.getText().clear();
     }
 
     private void doDbCheck() {

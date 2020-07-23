@@ -132,7 +132,7 @@ public class fragment_item_reservation_details_one extends Fragment {
             description.setText(res.getString(iDesc));
         }
 
-        calendarView.setMinDate(System.currentTimeMillis() - 1000);
+//        calendarView.setMinDate(System.currentTimeMillis() - 1000);
 
         final String finalItem1 = item;
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
@@ -168,11 +168,15 @@ public class fragment_item_reservation_details_one extends Fragment {
                 fragment = new fragment_item_reservation_details_two();
                 fragment.setArguments(bundle);
 
-                FragmentManager fm = getFragmentManager();
-                FragmentTransaction ft = fm.beginTransaction();
-                ft.replace(R.id.fragment_container, fragment);
-                ft.addToBackStack("fragment_item_reservation_details_one");
-                ft.commit();
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_container, fragment)
+                        .addToBackStack("fragment_item_reservation")
+                        .commit();
+//                FragmentManager fm = getFragmentManager();
+//                FragmentTransaction ft = fm.beginTransaction();
+//                ft.replace(R.id.fragment_container, fragment);
+//                ft.addToBackStack("fragment_item_reservation");
+//                ft.commit();
             }
         });
 

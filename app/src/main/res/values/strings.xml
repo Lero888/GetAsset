@@ -169,6 +169,13 @@
     <string name="error_quantity_warning">"Please input amount between 1 to %1$d"</string>
     <string name="itemCapital">ITEM</string>
     <string name="classroomCapital">CLASSROOM</string>
+    <string name="please_select_a_date">Please select a date.</string>
+    <string name="book">Book</string>
+    <string name="field_empty">FIELD CANNOT BE EMPTY</string>
+    <string name="wrong_password">WRONG PASSWORD</string>
+    <string name="password_retrieve">You are retrieving the items. Please request the staff to input the password.</string>
+    <string name="password_return">You are returning the items. Please request the staff to input the password.</string>
+    <string name="invalid_login">Email or password invalid. Please try again.</string>
 
 
 </resources>

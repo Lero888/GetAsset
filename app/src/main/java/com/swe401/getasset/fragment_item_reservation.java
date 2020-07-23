@@ -109,11 +109,10 @@ public class fragment_item_reservation extends Fragment {
                 fragment = new fragment_item_reservation_details_one();
                 fragment.setArguments(bundle);
 
-                FragmentManager fm = getFragmentManager();
-                FragmentTransaction ft = fm.beginTransaction();
-                ft.replace(R.id.fragment_container, fragment);
-                ft.addToBackStack("fragment_item_reservation");
-                ft.commit();
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_container, fragment)
+                        .addToBackStack("fragment_item_reservation")
+                        .commit();
             }
         });
 
@@ -128,11 +127,10 @@ public class fragment_item_reservation extends Fragment {
                 fragment = new fragment_item_reservation_details_one();
                 fragment.setArguments(bundle);
 
-                FragmentManager fm = getFragmentManager();
-                FragmentTransaction ft = fm.beginTransaction();
-                ft.replace(R.id.fragment_container, fragment);
-                ft.addToBackStack("fragment_item_reservation");
-                ft.commit();
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_container, fragment)
+                        .addToBackStack("fragment_item_reservation")
+                        .commit();
             }
         });
 
@@ -142,11 +140,10 @@ public class fragment_item_reservation extends Fragment {
             @Override
             public void onClick(View view) {
                 fragment = new fragment_item_reservation_it();
-                FragmentManager fm = getFragmentManager();
-                FragmentTransaction ft = fm.beginTransaction();
-                ft.replace(R.id.fragment_container, fragment);
-                ft.addToBackStack("fragment_item_reservation");
-                ft.commit();
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_container, fragment)
+                        .addToBackStack("fragment_item_reservation")
+                        .commit();
             }
         });
 

@@ -20,6 +20,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -42,6 +44,7 @@ public class fragment_item_status<yes> extends Fragment {
 
     DatabaseHelper assetDb;
     session_management session;
+    CustomAdapter customAdapter;
 
     private ListView listItem;
     List <DatabaseHelper.ItemBorrow> itemList;
@@ -51,6 +54,7 @@ public class fragment_item_status<yes> extends Fragment {
     EditText numberPassword;
     Button buttonSubmitPassword;
     TextView errorPassword;
+    TextView status;
     String item;
     String date;
     Integer count;
@@ -102,9 +106,10 @@ public class fragment_item_status<yes> extends Fragment {
         final String username = user.get(session_management.KEY_NAME);
 
         listItem = view.findViewById(R.id.listView);
-        final CustomAdapter customAdapter = new CustomAdapter();
+        customAdapter = new CustomAdapter();
         customAdapter.notifyDataSetChanged();
         listItem.setAdapter(customAdapter);
+        itemList = assetDb.fetchItemList(username);
 
         // pop up
         myDialog.setContentView(R.layout.custom_popup);
@@ -112,12 +117,13 @@ public class fragment_item_status<yes> extends Fragment {
         buttonSubmitPassword = myDialog.findViewById(R.id.submitPassword);
         errorPassword = myDialog.findViewById(R.id.error_pw);
 
+
         // when a specific item is clicked
         listItem.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                TextView status  = view.findViewById(R.id.itemStatusStatus);
+                status  = view.findViewById(R.id.itemStatusStatus);
                 String statusItem = status.getText().toString();
 
                 if (statusItem.equals("Borrowed") || statusItem.equals("Retrieved")) {
@@ -145,19 +151,37 @@ public class fragment_item_status<yes> extends Fragment {
 
                 String pw = numberPassword.getText().toString();
                 boolean checkPassword = assetDb.validatePassword(pw, item);
+                TextView instruction = myDialog.findViewById(R.id.popUpInstruction);
+                String ins = instruction.getText().toString();
+                String statusItem;
+                if (ins.equals("You are retrieving the items. Please request the staff to input the password.")) statusItem = "Borrowed";
+                else statusItem = "Retrieved";
 
                 if (checkPassword) {
 
                     assetDb.updateItemBorrowStatus(username, date, item);
                     myDialog.dismiss();
 
+                    if (statusItem.equals("Borrowed")) {
+                        Toast.makeText(getContext(), "You may retrieve the item.", Toast.LENGTH_LONG).show();
+                    } else {
+
+                        Toast.makeText(getContext(), "You may return the item.", Toast.LENGTH_LONG).show();
+
+                    }
+
+                    itemList.clear();
+                    itemList = assetDb.fetchItemList(username);
+                    customAdapter.notifyDataSetChanged();
+
+
                 } else {
 
                     errorPassword.setVisibility(View.VISIBLE);
                     if (pw.length()==0){
-                        errorPassword.setText("FIELD CANNOT BE EMPTY");
+                        errorPassword.setText(R.string.field_empty);
                     } else {
-                        errorPassword.setText("WRONG PASSWORD");
+                        errorPassword.setText(R.string.wrong_password);
                     }
                 }
             }
@@ -186,9 +210,9 @@ public class fragment_item_status<yes> extends Fragment {
         TextView instruction = myDialog.findViewById(R.id.popUpInstruction);
 
         if (status.equals("Borrowed")) {
-            instruction.setText("You are retrieving the items. Please request the staff to input the password.");
+            instruction.setText(R.string.password_retrieve);
         } else if (status.equals("Retrieved")) {
-            instruction.setText("You are returning the items. Please request the staff to input the password.");
+            instruction.setText(R.string.password_return);
         }
     }
 
@@ -220,10 +244,10 @@ public class fragment_item_status<yes> extends Fragment {
             String username = user.get(session_management.KEY_NAME);
 
 //            ImageView imgItem = (ImageView) view.findViewById(R.id.image_item);
-            TextView itemStatusDate = (TextView) view.findViewById(R.id.itemStatusDate);
-            TextView itemStatusName = (TextView) view.findViewById(R.id.itemStatusName);
-            TextView itemStatusQuantity = (TextView) view.findViewById(R.id.itemStatusQuantity);
-            TextView itemStatusStatus = (TextView) view.findViewById(R.id.itemStatusStatus);
+            TextView itemStatusDate = view.findViewById(R.id.itemStatusDate);
+            TextView itemStatusName = view.findViewById(R.id.itemStatusName);
+            TextView itemStatusQuantity = view.findViewById(R.id.itemStatusQuantity);
+            TextView itemStatusStatus = view.findViewById(R.id.itemStatusStatus);
 //            buttonPopup = view.findViewById(R.id.buttonPassword);
 
     //            buttonPopup.setOnClickListener(new View.OnClickListener() {
@@ -247,7 +271,7 @@ public class fragment_item_status<yes> extends Fragment {
 
                 int i = 0;
 
-                itemList = assetDb.fetchItemList(username);
+//                itemList = assetDb.fetchItemList(username);
 
                 for (DatabaseHelper.ItemBorrow item: itemList) {
 

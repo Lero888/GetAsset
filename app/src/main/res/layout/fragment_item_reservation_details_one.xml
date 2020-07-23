@@ -70,8 +70,7 @@
                 android:layout_toRightOf="@id/itemName"
                 android:layout_toEndOf="@id/itemName"
                 android:textColor="#130202"
-                android:textSize="20sp"
-                android:text="Quantity" />
+                android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/itemDepartment"
@@ -101,8 +100,7 @@
                 android:layout_toRightOf="@id/itemDepartment"
                 android:layout_toEndOf="@id/itemDepartment"
                 android:textColor="#130202"
-                android:textSize="20sp"
-                android:text="Quantity" />
+                android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/itemDesc"
@@ -132,8 +130,7 @@
                 android:layout_toRightOf="@id/itemDesc"
                 android:layout_toEndOf="@id/itemDesc"
                 android:textColor="#130202"
-                android:textSize="20sp"
-                android:text="Quantity" />
+                android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/itemInstruction"
@@ -157,6 +154,7 @@
                 android:id="@+id/calendarView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:minDate="07/20/2020"
                 android:maxDate="07/24/2020"
                 android:layout_centerHorizontal="true"
                 android:layout_below="@id/itemInstruction"
@@ -190,7 +188,7 @@
                 android:layout_toEndOf="@id/itemQuantity"
                 android:textColor="#130202"
                 android:textSize="20sp"
-                android:text="Please select a date." />
+                android:text="@string/please_select_a_date" />
 
             <Button
                 android:id="@+id/button_book_item"
@@ -206,7 +204,7 @@
                 android:layout_marginBottom="50dp"
                 android:layout_marginEnd="50dp"
                 android:background="@drawable/button_layout"
-                android:text="Book"
+                android:text="@string/book"
                 android:textColor="#F8F5F5"
                 android:textSize="18sp" />
 

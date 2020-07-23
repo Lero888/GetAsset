@@ -160,7 +160,7 @@ public class fragment_item_reservation_details_two extends Fragment {
 
         // Date
         final String[] selectedDate = new String[1];
-        ArrayAdapter<String> myAdapter_date = new ArrayAdapter<String>(getActivity(),
+        ArrayAdapter<String> myAdapter_date = new ArrayAdapter<>(getActivity(),
                 android.R.layout.simple_list_item_1,getResources().getStringArray(R.array.dates));
         myAdapter_date.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerDate.setAdapter(myAdapter_date);
@@ -302,11 +302,10 @@ public class fragment_item_reservation_details_two extends Fragment {
             @Override
             public void onClick(View view) {
                 fragment = new fragment_item_reservation();
-                FragmentManager fm = getFragmentManager();
-                FragmentTransaction ft = fm.beginTransaction();
-                ft.replace(R.id.fragment_container, fragment);
-                ft.addToBackStack("fragment_item_status");
-                ft.commit();
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_container, fragment)
+                        .addToBackStack("fragment_item_reservation")
+                        .commit();
             }
         });
 

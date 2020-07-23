@@ -79,10 +79,10 @@ public class fragment_status extends Fragment {
             @Override
             public void onClick(View view) {
                 fragment = new fragment_item_status();
-                FragmentManager fm = getFragmentManager();
-                FragmentTransaction ft = fm.beginTransaction();
-                ft.replace(R.id.fragment_container, fragment);
-                ft.commit();
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_container, fragment)
+                        .addToBackStack("fragment_status")
+                        .commit();
             }
         });
 
@@ -90,10 +90,10 @@ public class fragment_status extends Fragment {
             @Override
             public void onClick(View view) {
                 fragment = new fragment_room_status();
-                FragmentManager fm = getFragmentManager();
-                FragmentTransaction ft = fm.beginTransaction();
-                ft.replace(R.id.fragment_container, fragment);
-                ft.commit();
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_container, fragment)
+                        .addToBackStack("fragment_status")
+                        .commit();
             }
         });
         return view;
