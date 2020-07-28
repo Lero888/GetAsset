@@ -144,13 +144,15 @@ public class fragment_item_reservation_details_one extends Fragment {
                 Cursor res = assetDb.fetchItemQuantityData(finalItem1, date);
                 if (res.getCount() == 0) {
 
-                    Toast.makeText(getContext(), date, Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), date, Toast.LENGTH_SHORT).show();
 
                     // Show message
                 } else {
                     int iQuantity = res.getColumnIndex("quantityLeft");
                     itemQuantity.setText(String.valueOf(res.getInt(iQuantity)));
                 }
+
+                res.close();
 
             }
         });
@@ -172,11 +174,6 @@ public class fragment_item_reservation_details_one extends Fragment {
                         .replace(R.id.fragment_container, fragment)
                         .addToBackStack("fragment_item_reservation")
                         .commit();
-//                FragmentManager fm = getFragmentManager();
-//                FragmentTransaction ft = fm.beginTransaction();
-//                ft.replace(R.id.fragment_container, fragment);
-//                ft.addToBackStack("fragment_item_reservation");
-//                ft.commit();
             }
         });
 

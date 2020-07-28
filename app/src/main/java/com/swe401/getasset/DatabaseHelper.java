@@ -6,16 +6,12 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.Cursor;
-import android.net.wifi.WifiManager;
-import android.util.Log;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
@@ -261,9 +257,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         int itemID = getItemID(item);
         Cursor cursor = fetchItemQuantityData(item, date);
         int iQuantity = cursor.getColumnIndex(QUANTITY_LEFT);
-        Integer currentQuantity = cursor.getInt(iQuantity);
+        int currentQuantity = cursor.getInt(iQuantity);
 
-        Integer updateQuantity = currentQuantity - quantity;
+        int updateQuantity = currentQuantity - quantity;
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -357,12 +353,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public boolean validateUser(String email, String pw){
         boolean checklogin=false;
+
         Cursor cursor = getUser(email,pw);
         if (cursor.moveToFirst()) {
             checklogin = true;
 
-        }else{
-            checklogin = false;
         }
         return checklogin;
 
@@ -385,6 +380,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         if (cursor.moveToFirst()){
             userID = cursor.getInt(0);
         }
+
+        cursor.close();
         return userID;
     }
 
@@ -552,13 +549,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         int iStatus = cursor.getColumnIndex(BORROW_STATUS);
         String status = cursor.getString(iStatus);
 
+        cursor.close();
         return status;
 
     }
 
     public Cursor fetchItemBorrowData(String user) {
 
-        Integer userID = getUserID(user);
+        int userID = getUserID(user);
         SQLiteDatabase db = this.getReadableDatabase();
 
         String queryString = "SELECT * FROM " + TABLE_ITEM_BORROW + " WHERE " + FK_IBID_UID + " = " + userID + ";";
@@ -579,7 +577,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
 
         Cursor cursor = fetchItemBorrowData(user);
-        Integer count = 0;
+        int count = 0;
         count = cursor.getCount();
 
         cursor.close();
@@ -592,7 +590,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public class ItemBorrow {
 
-//        private String image;
         private String name;
         private Integer quantity;
         private String status;
@@ -623,18 +620,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         public String getDate() {
 
             return this.dateBorrow;
-        }
-
-        public Date getDateFormat() throws ParseException {
-
-            String dateFormat = this.dateBorrow;
-            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-            String formatted = sdf.format(dateFormat);
-            Date date = sdf.parse(formatted);
-//            Date date = sdf.parse(dateFormat);
-
-            return date;
-
         }
     }
 
@@ -671,13 +656,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         }
 
-//        Collections.sort(itemList, (o1, o2) -> o1.getDateFormat() - o2.getDateFormat();
         return itemList;
     }
 
     public Cursor fetchItemQuantityData(String item, String date) {
 
-        int itemID = getItemID(item);
+        Integer itemID = getItemID(item);
         SQLiteDatabase db = this.getReadableDatabase();
 
         String queryString = "SELECT * FROM " + TABLE_ITEM_QUANTITY + " WHERE " + FK_IQID_IID + " = " + itemID + " AND " +
@@ -705,9 +689,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             roomID=cursor.getInt(0);
 
         }
-
-
         db.close();
+        cursor.close();
         return roomID;
     }
 
@@ -771,6 +754,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
         int rName = cursor.getColumnIndex(ROOM_NAME);
         String roomName= cursor.getString(rName);
+
+        cursor.close();
         return roomName;
     }
 
@@ -804,8 +789,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
 
         Cursor cursor = fetchRoomBorrowData(user);
-        Integer count = 0;
-        count = cursor.getCount();
+        int count = cursor.getCount();
 
         cursor.close();
         db.close();
@@ -875,7 +859,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         }
 
-//        Collections.sort(itemList, (o1, o2) -> o1.getDateFormat() - o2.getDateFormat();
         return roomList;
     }
 

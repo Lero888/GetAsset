@@ -93,10 +93,12 @@ public class fragment_item_reservation extends Fragment {
 
         // get Quantity of Table and Chair
         Cursor res = assetDb.fetchItemData("Table");
-        quantityTable.setText(String.valueOf(res.getInt(3)));
+        int iQuantity = res.getColumnIndex("itemQuantity");
+
+        quantityTable.setText(String.valueOf(res.getInt(iQuantity)));
 
         res = assetDb.fetchItemData("Chair");
-        quantityChair.setText(String.valueOf(res.getInt(3)));
+        quantityChair.setText(String.valueOf(res.getInt(iQuantity)));
 
         buttonTable.setOnClickListener(new View.OnClickListener() {
             @Override

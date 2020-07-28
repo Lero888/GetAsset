@@ -176,6 +176,9 @@
     <string name="password_retrieve">You are retrieving the items. Please request the staff to input the password.</string>
     <string name="password_return">You are returning the items. Please request the staff to input the password.</string>
     <string name="invalid_login">Email or password invalid. Please try again.</string>
+    <string name="please_input_password">Please input password</string>
+    <string name="submit">Submit</string>
+    <string name="usage">Usage</string>
 
 
 </resources>

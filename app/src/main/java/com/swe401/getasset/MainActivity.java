@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // detect selection of the user
         navView = findViewById(R.id.nav_view);
         View headerView = navView.getHeaderView(0);
-        TextView navUsername = (TextView) headerView.findViewById(R.id.Username);
+        TextView navUsername = headerView.findViewById(R.id.Username);
         navUsername.setText(username);
         TextView navEmail = headerView.findViewById(R.id.Email);
         navEmail.setText(email);
@@ -74,7 +74,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             drawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
-
         }
     }
 
@@ -82,20 +81,29 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
 
         switch (menuItem.getItemId()) {
+
+            case R.id.nav_status:
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_container, new fragment_status())
+                        .addToBackStack("activity_fragment_status")
+                        .commit();
+                navView.setCheckedItem(R.id.nav_status);
+                break;
+
             case R.id.nav_item_reserve:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new fragment_item_reservation()).commit();
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_container, new fragment_item_reservation())
+                        .addToBackStack("activity_fragment_item_reservation")
+                        .commit();
                 navView.setCheckedItem(R.id.nav_item_reserve);
 
                 break;
-            case R.id.nav_status:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new fragment_status()).commit();
-                navView.setCheckedItem(R.id.nav_status);
-                break;
+
             case R.id.nav_room_reserve:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new fragment_classroom_reservation()).commit();
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_container, new fragment_classroom_reservation())
+                        .addToBackStack("activity_fragment_room_reservation")
+                        .commit();
                 navView.setCheckedItem(R.id.nav_room_reserve);
                 break;
             case R.id.nav_share:

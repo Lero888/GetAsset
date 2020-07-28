@@ -1,13 +1,8 @@
 package com.swe401.getasset;
 
 import android.app.Dialog;
-import android.content.ClipData;
-import android.database.Cursor;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,10 +14,6 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import org.w3c.dom.Text;
-
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -128,7 +119,6 @@ public class fragment_item_status<yes> extends Fragment {
 
                 if (statusItem.equals("Borrowed") || statusItem.equals("Retrieved")) {
 
-
                     errorPassword.setVisibility(View.INVISIBLE);
                     numberPassword.getText().clear();
                     TextView viewItemName = view.findViewById(R.id.itemStatusName);
@@ -138,13 +128,13 @@ public class fragment_item_status<yes> extends Fragment {
                     date = dateBorrow.getText().toString();
                     showPopUp(item, statusItem);
 
-
                 }
 
 
             }
         });
 
+        // submitting the password
         buttonSubmitPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -174,7 +164,6 @@ public class fragment_item_status<yes> extends Fragment {
                     itemList = assetDb.fetchItemList(username);
                     customAdapter.notifyDataSetChanged();
 
-
                 } else {
 
                     errorPassword.setVisibility(View.VISIBLE);
@@ -187,7 +176,6 @@ public class fragment_item_status<yes> extends Fragment {
             }
 
         });
-
 
         return view;
     }
@@ -243,24 +231,13 @@ public class fragment_item_status<yes> extends Fragment {
             HashMap<String, String> user = session.getUserDetails();
             String username = user.get(session_management.KEY_NAME);
 
-//            ImageView imgItem = (ImageView) view.findViewById(R.id.image_item);
             TextView itemStatusDate = view.findViewById(R.id.itemStatusDate);
             TextView itemStatusName = view.findViewById(R.id.itemStatusName);
             TextView itemStatusQuantity = view.findViewById(R.id.itemStatusQuantity);
             TextView itemStatusStatus = view.findViewById(R.id.itemStatusStatus);
-//            buttonPopup = view.findViewById(R.id.buttonPassword);
-
-    //            buttonPopup.setOnClickListener(new View.OnClickListener() {
-    //                @Override
-    //                public void onClick(View view) {
-    //
-    //                    showPopUp(view);
-    //                }
-    //            });
 
             count = assetDb.getCountItemBorrowData(username);
 
-            String[] itemImage = new String[count];
             String[] itemDate = new String[count];
             String[] itemName = new String[count];
             Integer[] itemQuantity = new Integer[count];
@@ -271,11 +248,7 @@ public class fragment_item_status<yes> extends Fragment {
 
                 int i = 0;
 
-//                itemList = assetDb.fetchItemList(username);
-
                 for (DatabaseHelper.ItemBorrow item: itemList) {
-
-//                    itemImage[i] = item.getImage();
                     itemDate[i] = item.getDate();
                     itemName[i] = item.getName();
                     itemQuantity[i] = item.getQuantity();
@@ -283,8 +256,6 @@ public class fragment_item_status<yes> extends Fragment {
                     i += 1;
 
                 }
-
-
             }
 
             if (count > 0) {
@@ -294,8 +265,6 @@ public class fragment_item_status<yes> extends Fragment {
                 itemStatusStatus.setText(itemStatus[position]);
 
             }
-
-
             return view;
         }
     }

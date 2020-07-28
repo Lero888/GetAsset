@@ -1,7 +1,6 @@
 package com.swe401.getasset;
 
 import android.database.Cursor;
-import android.media.Image;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -84,10 +83,12 @@ public class fragment_item_reservation_it extends Fragment {
 
         // get Quantity of Speaker and Mic
         Cursor res = assetDb.fetchItemData("Speaker");
-        quantitySpeaker.setText(String.valueOf(res.getInt(3)));
+        int iQuantity = res.getColumnIndex("itemQuantity");
+
+        quantitySpeaker.setText(String.valueOf(res.getInt(iQuantity)));
 
         res = assetDb.fetchItemData("Microphone");
-        quantityMicrophone.setText(String.valueOf(res.getInt(3)));
+        quantityMicrophone.setText(String.valueOf(res.getInt(iQuantity)));
 
         buttonSpeaker.setOnClickListener(new View.OnClickListener() {
             @Override

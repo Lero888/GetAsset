@@ -14,7 +14,7 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
             <TextView
                 android:id="@+id/IR_details_title"
@@ -157,7 +157,7 @@
 
             <TextView
                 android:id="@+id/IR_phone_no"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/itemInstruction"
                 android:layout_marginStart="50dp"
@@ -172,35 +172,24 @@
                 android:id="@+id/IR_edit_phone"
                 android:layout_width="300dp"
                 android:layout_height="30dp"
-                android:layout_centerHorizontal="true"
                 android:layout_below="@id/IR_phone_no"
+                android:autofillHints="Phone Number"
+                android:layout_centerHorizontal="true"
                 android:layout_marginStart="50dp"
                 android:layout_marginLeft="50dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="9dp"
                 android:background="#EAE4E4"
                 android:ems="10"
                 android:inputType="phone" />
 
             <TextView
-                android:id="@+id/error_phone"
-                android:layout_width="wrap_content"
+                android:id="@+id/IR_reservation_date"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/IR_edit_phone"
                 android:layout_marginStart="50dp"
                 android:layout_marginLeft="50dp"
-                android:layout_marginTop="6dp"
-                android:textColor="#FF0000"
-                android:visibility="invisible"
-                android:textSize="15sp" />
-
-            <TextView
-                android:id="@+id/IR_reservation_date"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/error_phone"
-                android:layout_marginStart="50dp"
-                android:layout_marginLeft="50dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="10dp"
                 android:text="@string/reservation_date"
                 android:textColor="#130202"
                 android:textSize="24sp" />
@@ -209,16 +198,16 @@
                 android:id="@+id/spinner_item_Date"
                 android:layout_width="300dp"
                 android:layout_height="30dp"
-                android:layout_centerHorizontal="true"
                 android:layout_below="@id/IR_reservation_date"
-                android:layout_marginStart="51dp"
-                android:layout_marginLeft="51dp"
-                android:layout_marginTop="20dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginStart="50dp"
+                android:layout_marginLeft="50dp"
+                android:layout_marginTop="22dp"
                 android:background="#EAE4E4" />
 
             <TextView
                 android:id="@+id/IR_amount"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/spinner_item_Date"
                 android:layout_marginStart="50dp"
@@ -234,6 +223,7 @@
                 android:layout_width="300dp"
                 android:layout_height="30dp"
                 android:layout_centerHorizontal="true"
+                android:autofillHints="Quantity"
                 android:layout_below="@id/IR_amount"
                 android:layout_marginStart="50dp"
                 android:layout_marginLeft="50dp"
@@ -245,7 +235,7 @@
 
             <TextView
                 android:id="@+id/error_amount"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/IR_edit_amount"
                 android:layout_marginStart="50dp"
@@ -257,23 +247,24 @@
 
             <TextView
                 android:id="@+id/IR_usage"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/error_amount"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentLeft="true"
-                android:layout_marginStart="50dp"
-                android:layout_marginLeft="50dp"
-                android:layout_marginTop="20dp"
-                android:text="Usage"
+                android:layout_marginStart="54dp"
+                android:layout_marginLeft="54dp"
+                android:layout_marginTop="15dp"
+                android:text="@string/usage"
                 android:textColor="#130202"
                 android:textSize="24sp" />
 
             <EditText
                 android:id="@+id/editTextUsage"
-                android:layout_width="304dp"
-                android:layout_height="100dp"
+                android:layout_width="300dp"
+                android:layout_height="80dp"
                 android:layout_below="@id/IR_usage"
+                android:autofillHints="Usage"
                 android:layout_marginStart="54dp"
                 android:layout_marginLeft="54dp"
                 android:layout_marginTop="10dp"
@@ -284,27 +275,15 @@
                 android:gravity="start|top"
                 android:inputType="textMultiLine" />
 
-            <TextView
-                android:id="@+id/error_usage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/editTextUsage"
-                android:layout_marginStart="50dp"
-                android:layout_marginLeft="50dp"
-                android:layout_marginTop="6dp"
-                android:textColor="#FF0000"
-                android:visibility="invisible"
-                android:textSize="15sp" />
-
             <Button
                 android:id="@+id/button_save"
                 android:layout_width="120dp"
                 android:layout_height="50dp"
-                android:layout_below="@id/error_usage"
+                android:layout_below="@id/editTextUsage"
                 android:layout_alignParentBottom="true"
                 android:layout_marginStart="80dp"
                 android:layout_marginLeft="80dp"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="20dp"
                 android:background="@drawable/button_layout"
                 android:text="@string/save"
                 android:textColor="#F6F0F0" />

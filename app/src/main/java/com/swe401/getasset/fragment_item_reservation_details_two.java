@@ -57,9 +57,7 @@ public class fragment_item_reservation_details_two extends Fragment {
     private String dateSelected;
     private EditText itemQuantity;
     private EditText itemUsage;
-    private TextView errorPhone;
     private TextView errorQuantity;
-    private TextView errorUsage;
 
     public fragment_item_reservation_details_two() {
         // Required empty public constructor
@@ -114,9 +112,7 @@ public class fragment_item_reservation_details_two extends Fragment {
         itemQuantity = view.findViewById(R.id.IR_edit_amount);
         itemUsage = view.findViewById(R.id.editTextUsage);
 
-        errorPhone = view.findViewById(R.id.error_phone);
         errorQuantity = view.findViewById(R.id.error_amount);
-        errorUsage = view.findViewById(R.id.error_usage);
 
         save = view.findViewById(R.id.button_save);
         cancel = view.findViewById(R.id.button_cancel);
@@ -206,11 +202,18 @@ public class fragment_item_reservation_details_two extends Fragment {
 
                     int amount = Integer.parseInt(s.toString());
                     Cursor cursor = assetDb.fetchItemQuantityData(finalItem, dateSelected);
+
                     if (cursor.getCount() == 0) {
 
                         Log.v("Error", "No value is found");
+
+                        // test
+                        Toast.makeText(getContext(), String.valueOf(amount), Toast.LENGTH_SHORT).show();
+
                     } else {
-                        int quanLeft = cursor.getInt(1);
+                        int iQuantity = cursor.getColumnIndex("quantityLeft");
+                        int quanLeft = cursor.getInt(iQuantity);
+
                         if (amount > quanLeft || quanLeft < 1) {
                             errorQuantity.setVisibility(View.VISIBLE);
                             errorQuantity.setText(getString(R.string.error_quantity_warning, quanLeft));
@@ -221,8 +224,6 @@ public class fragment_item_reservation_details_two extends Fragment {
                         }
                     }
                 }
-
-
             }
 
             @Override
@@ -239,38 +240,27 @@ public class fragment_item_reservation_details_two extends Fragment {
                 HashMap<String, String> user = session.getUserDetails();
                 String username = user.get(session_management.KEY_NAME);
 
-
                 // Validate if empty
                 if (TextUtils.isEmpty(phoneNo.getText()) || TextUtils.isEmpty(itemQuantity.getText()) || TextUtils.isEmpty(itemUsage.getText())) {
 
                     if (TextUtils.isEmpty(phoneNo.getText())) {
-                        errorPhone.setVisibility(View.VISIBLE);
-                        errorPhone.setText(R.string.required_phoneNum);
-                    } else {
-                        errorPhone.setVisibility(View.INVISIBLE);
+                        phoneNo.requestFocus();
+                        phoneNo.setError("Phone number is required");
                     }
 
                     if (TextUtils.isEmpty(itemQuantity.getText())) {
-                        errorQuantity.setVisibility(View.VISIBLE);
-                        errorQuantity.setText(R.string.required_quantity);
-                    } else {
-                        errorQuantity.setVisibility(View.INVISIBLE);
+                        itemQuantity.requestFocus();
+                        itemQuantity.setError("Quantity is required");
                     }
 
                     if (TextUtils.isEmpty(itemUsage.getText())) {
-                        errorUsage.setVisibility(View.VISIBLE);
-                        errorUsage.setText(R.string.required_usage);
-                    } else {
-
-                        errorUsage.setVisibility(View.INVISIBLE);
+                        itemUsage.requestFocus();
+                        itemUsage.setError("Usage is required");
                     }
 
                     Toast.makeText(getContext(), "Please fill in all details.", Toast.LENGTH_SHORT).show();
 
                 } else {
-
-                    errorPhone.setVisibility(View.INVISIBLE);
-                    errorUsage.setVisibility(View.INVISIBLE);
 
                     // Validate if the quantity is in acceptable range
                     if (quantityTrue[0]) {
